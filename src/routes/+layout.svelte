@@ -50,6 +50,12 @@
 	onMount(() => {
 		store.rollover();
 		theme.apply();
+		// L'app est prête : on retire l'écran de chargement posé par app.html.
+		const splash = document.getElementById('splash');
+		if (splash) {
+			splash.style.opacity = '0';
+			setTimeout(() => splash.remove(), 400);
+		}
 		const media = matchMedia('(prefers-color-scheme: light)');
 		const onChange = () => theme.pref === 'auto' && theme.apply();
 		media.addEventListener('change', onChange);
