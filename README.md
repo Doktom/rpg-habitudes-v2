@@ -1,17 +1,18 @@
-# App RPG d'habitudes
+# App RPG d'habitudes — V2
 
-Webapp perso (mobile + PC) de suivi d'habitudes, de planification hebdo/mensuelle et de projets au long cours, avec des mécaniques de RPG et de gamification.
+Webapp perso (mobile + PC) de suivi d'habitudes, de planification hebdo/mensuelle et de projets au long cours, avec des mécaniques de RPG dans un univers spatial.
 
-Statut : **V0 prototype**. Les données sont stockées dans le navigateur (localStorage), avec export/import JSON depuis l'écran Personnage.
+Statut : **V2 en cours**, refonte graphique et UX à partir de la V0 ([Doktom/rpg-habitudes](https://github.com/Doktom/rpg-habitudes), tag `v0.1-base`). Les données sont stockées dans le navigateur ; au premier lancement, la V2 importe une copie des données de la V0.
 
 - [Cahier des charges](docs/cahier-des-charges.md)
+- [Univers et récompenses](docs/univers.md)
 - [Journal des sessions](docs/journal-sessions.md)
 
 ## En ligne
 
-**https://doktom.github.io/rpg-habitudes/** — redéployé automatiquement à chaque push sur `main` (workflow `.github/workflows/deploy.yml` : tests, build, GitHub Pages).
+**https://doktom.github.io/rpg-habitudes-v2/** — redéployé automatiquement à chaque push sur `main` (workflow `.github/workflows/deploy.yml` : tests, build, GitHub Pages).
 
-Lien de test secondaire, privé : https://claude.ai/artifact/DQ5iFZruSWtsrguVE7pd4x (mis à jour à la main avec `npm run build:artifact`).
+La V0 reste en ligne sur https://doktom.github.io/rpg-habitudes/.
 
 ## Lancer en local
 

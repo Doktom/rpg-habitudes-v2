@@ -1,18 +1,27 @@
 # CLAUDE.md
 
-Webapp perso de suivi d'habitudes, planification hebdo/mensuelle et projets au long cours, avec une couche RPG (stats, XP, jauges Discipline / Motivation / Inspiration, campagnes). Langue du projet : français.
+Webapp perso de suivi d'habitudes, planification hebdo/mensuelle et projets au long cours, avec une couche RPG (stats, XP, jauges Discipline / Motivation / Inspiration, campagnes) dans un univers spatial (le Sillage, `docs/univers.md`). Langue du projet : français.
+
+## Ce dépôt : la V2 graphique
+
+Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la V0, avec une grosse refonte de l'UI et de l'UX, belle et douce, dans l'univers spatial.
+
+- **Base** : dépôt `Doktom/rpg-habitudes`, tag `v0.1-base` (historique conservé ici). La V0 reste en ligne et n'est plus modifiée, sauf correctif.
+- **Mécaniques** : `src/lib/engine/`, `config.ts`, `universe.ts` et le store sont la base fonctionnelle. Les garder identiques sauf décision explicite ; la refonte porte sur les écrans, les composants et le style.
+- **Stockage** : la V2 est sur le même domaine que la V0 (doktom.github.io), donc partage le localStorage. Elle a ses propres clés (`rpg-habitudes-v2:*`) et importe en lecture seule les données V0 au premier lancement. Ne jamais écrire dans les clés `rpg-habitudes:*`.
 
 ## Démarrer une session
 
 1. Lire la carte mentale (voir « Carte mentale : outil de pilotage »), puis l'entrée la plus récente de `docs/journal-sessions.md` et `docs/cahier-des-charges.md`.
-2. `npm install` puis `npm test` (10 tests attendus au vert) et `npm run dev`.
+2. `npm install` puis `npm test` (21 tests attendus au vert) et `npm run dev`.
 3. Si le doc partagé Claude Docs n'est pas accessible, `docs/cahier-des-charges.md` fait foi.
 
-**État au 29/10/2026** : V0 en ligne (voir « En ligne »), données en localStorage, pas encore de comptes.
+**État au 29/10/2026** : V2 créée à partir de la V0 ; refonte graphique à démarrer (direction artistique à valider avec l'utilisateur).
 
 **Prochaines étapes, par ordre de priorité**
 
-1. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`).
+1. Refonte graphique et UX (direction validée d'abord, puis système de design, puis écran par écran).
+2. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`), à reporter ici.
 2. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
 3. PWA installable + notifications (rappels d'habitudes, revue du dimanche).
 4. Vue mois du planning, revue mensuelle et arcs.
@@ -65,9 +74,9 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 
 `npm run dev` · `npm test` · `npm run check` · `npm run build` · `npm run build:artifact`
 
-Sous Windows avec Git Bash, tester le build GitHub Pages avec `MSYS_NO_PATHCONV=1 BASE_PATH=/rpg-habitudes npm run build` (sinon le chemin est converti en chemin Windows).
+Sous Windows avec Git Bash, tester le build GitHub Pages avec `MSYS_NO_PATHCONV=1 BASE_PATH=/rpg-habitudes-v2 npm run build` (sinon le chemin est converti en chemin Windows).
 
 ## En ligne
 
-- Site public : https://doktom.github.io/rpg-habitudes/ — déployé automatiquement par GitHub Actions à chaque push sur `main` (le build reçoit `BASE_PATH=/rpg-habitudes`). Le dépôt est public : ne jamais y mettre de secrets ni de données personnelles.
-- Lien de test privé (optionnel) : https://claude.ai/artifact/DQ5iFZruSWtsrguVE7pd4x — republier `build/artifact.html` + `build/app/` (chemins `app/...`) après `npm run build:artifact`.
+- Site public V2 : https://doktom.github.io/rpg-habitudes-v2/ — déployé automatiquement par GitHub Actions à chaque push sur `main` (le build reçoit `BASE_PATH=/rpg-habitudes-v2`, tiré du nom du dépôt). Le dépôt est public : ne jamais y mettre de secrets ni de données personnelles.
+- V0 (base, figée) : https://doktom.github.io/rpg-habitudes/.
