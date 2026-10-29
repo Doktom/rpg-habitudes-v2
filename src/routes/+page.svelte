@@ -28,7 +28,8 @@
 	import { levelInfo } from '#lib/engine/xp.ts';
 	import { DANCE_LABEL, MOMENT_LABEL } from '#lib/labels.ts';
 	import { store, uid } from '#lib/store.svelte.ts';
-	import type { Habit, Loot, Moment } from '#lib/types.ts';
+	import { toasts } from '#lib/toasts.svelte.ts';
+	import type { Habit, Loot, Moment, Task } from '#lib/types.ts';
 	import { SECTORS } from '#lib/universe.ts';
 
 	let date = $state(today());
@@ -77,6 +78,14 @@
 	function toggleExercise(habitId: string, exId: string) {
 		const list = checked[habitId] ?? [];
 		checked[habitId] = list.includes(exId) ? list.filter((x) => x !== exId) : [...list, exId];
+	}
+
+	function toggleTask(t: Task) {
+		const finishing = !t.done;
+		store.toggleTask(t);
+		if (!finishing) return;
+		const gain = earned(`task:${t.id}`);
+		toasts.push({ title: 'Tâche terminée', xp: gain?.xp, loot: gain?.loot });
 	}
 
 	function addTask() {
@@ -305,7 +314,7 @@
 	<div class="card p-2">
 		{#each tasks as t (t.id)}
 			<label class="flex items-center gap-3 rounded-xl px-2.5 py-2 text-sm transition-colors hover:bg-raised">
-				<input type="checkbox" checked={!!t.done} onchange={() => store.toggleTask(t)} />
+				<input type="checkbox" checked={!!t.done} onchange={() => toggleTask(t)} />
 				<span class="min-w-0 flex-1 font-semibold {t.done ? 'text-muted line-through' : ''}">{t.title}</span>
 				{#if !t.done && !t.date && t.list === 'week'}<span class="chip bg-sky-100 text-sky-800">semaine</span>{/if}
 				{#if !t.done && !t.date && t.list === 'month'}<span class="chip bg-violet-100 text-violet-800">mois</span>{/if}

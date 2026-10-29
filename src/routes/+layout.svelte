@@ -7,6 +7,7 @@
 	import LootLine from '#lib/components/LootLine.svelte';
 	import TestBanner from '#lib/components/TestBanner.svelte';
 	import ThemeSwitch from '#lib/components/ThemeSwitch.svelte';
+	import Toasts from '#lib/components/Toasts.svelte';
 	import { totalXp } from '#lib/engine/progress.ts';
 	import { materials } from '#lib/engine/ship.ts';
 	import { levelInfo } from '#lib/engine/xp.ts';
@@ -64,6 +65,7 @@
 </script>
 
 <TestBanner />
+<Toasts />
 
 <div class="min-h-screen md:flex">
 	<aside class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-5 border-r border-line bg-surface/70 p-4 backdrop-blur md:flex">

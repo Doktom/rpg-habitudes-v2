@@ -2,6 +2,20 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-10-29 (nuit, suite) — V2 : écran À faire
+
+**Réalisé**
+
+- En-tête « Manifeste de bord » avec trois chiffres : tâches à faire, faites cette semaine, XP gagnée sur les tâches cette semaine.
+- Ajout rapide : grand champ, liste et effort en sélecteurs à pilules (`Segmented`), catégorie, aperçu de la récompense.
+- Filtres par catégorie en puces colorées (seules les catégories utilisées apparaissent).
+- Quatre listes illustrées, avec un message d'accueil quand elles sont vides. Case ronde dont l'anneau prend la couleur de l'effort (`TaskCheck`) ; ligne avec catégorie, échéance (en rouge si dépassée), étapes, début de la note et XP prévue.
+- Détail repensé : titre, détails, effort et liste en pilules, échéance, catégorie, étapes avec barre de progression, suppression confirmée.
+- Notification de gain (« Tâche terminée · +37 XP ») quand une tâche est terminée, ici et dans Aujourd'hui (`Toasts`).
+- Vérifié en sombre, en clair et sur mobile avec le mode test. Types au vert.
+
+**Prochaine étape** : écran Pilote.
+
 ## 2026-10-29 (nuit, suite) — V2 : écran Vaisseau
 
 **Réalisé**

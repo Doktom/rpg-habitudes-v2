@@ -20,7 +20,7 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 
 **Prochaines étapes, par ordre de priorité**
 
-1. Refonte graphique, écran par écran (système de design, coque, Aujourd'hui et Vaisseau faits le 29/10 ; ensuite À faire, Pilote, puis le reste).
+1. Refonte graphique, écran par écran (système de design, coque, Aujourd'hui, Vaisseau et À faire faits le 29/10 ; ensuite Pilote, puis Planning, Campagnes, Revue, Habitudes, Danse).
 2. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`), à reporter ici.
 3. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
 3. PWA installable + notifications (rappels d'habitudes, revue du dimanche).
@@ -66,7 +66,7 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 - **Thèmes** : Nuit douce (sombre, par défaut) et Aube orbitale (clair), plus « automatique ». Jetons dans `src/app.css` (`--page`, `--surface`, `--raised`, `--line`, `--ink`, `--muted`, `--accent`, `--reward`, `--done`, `--g-*` pour les jauges) et classes Tailwind associées (`bg-surface`, `text-muted`, `bg-accent-soft`…). Choix du thème : `src/lib/theme.svelte.ts`, appliqué avant l'affichage par le script de `src/app.html`.
 - **Écrire les écrans avec les jetons** (`bg-surface`, `text-ink`, `text-muted`, `border-line`, `bg-accent`…) plutôt qu'avec des couleurs Tailwind. La palette `zinc` est rebranchée sur la rampe neutre du thème, et les teintes d'accent ont une version sombre générée par `node scripts/gen-dark-hues.mjs` (`src/theme-hues-dark.css`) : ajouter une teinte là si un écran en utilise une nouvelle. Pas de `bg-white`/`text-white`.
 - **Classes de composants** : `.card`, `.btn`, `.btn-primary`, `.btn-ghost`, `.input`, `.label`, `.h2`, `.eyebrow`, `.chip`.
-- **Composants** : `ShipArt` (le Sillage en SVG, dont chaque partie reflète le niveau d'un module), `OrbitRing` (orbite elliptique autour de Kronos), `LevelRing`, `Gauges`, `TierButtons` (palier en pilule), `LootLine` (butin avec icônes), `ThemeSwitch`. Icônes : `@lucide/svelte`. Police : Nunito (`@fontsource-variable/nunito`, embarquée).
+- **Composants** : `ShipArt` (le Sillage en SVG, dont chaque partie reflète le niveau d'un module), `OrbitRing` (orbite elliptique autour de Kronos), `LevelRing`, `Gauges`, `TierButtons` (palier en pilule), `LootLine` (butin avec icônes), `ThemeSwitch`, `Segmented` (sélecteur à pilules), `TaskCheck` (case ronde colorée par l'effort), `Toasts` + `toasts.svelte.ts` (notification de gain : `toasts.push({ title, xp, loot })`). Icônes : `@lucide/svelte`. Police : Nunito (`@fontsource-variable/nunito`, embarquée).
 - **Navigation** : barre latérale groupée (Bord, Voyage, Pilote) sur PC ; sur mobile, une barre flottante à 4 écrans + « Plus ».
 
 ## Stack
