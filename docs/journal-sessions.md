@@ -2,6 +2,19 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-10-29 (nuit, suite) — V2 : écran Vaisseau
+
+**Réalisé**
+
+- Illustration du Sillage en SVG (`ShipArt`) qui évolue avec les modules : le réacteur s'allume et rayonne, la coque passe de fissurée à blindée, les propulseurs crachent une flamme de plus en plus longue, l'antenne grandit et émet. Flottement et animations douces, désactivés si le système demande moins d'animations ; éclat lumineux sur la partie améliorée.
+- En-tête : nom, classe, progression vers la classe suivante, lore.
+- Soute en trois tuiles illustrées ; orbite avec le détail des points et du butin d'amarrage.
+- Modules et compétences en cartes : icône, niveaux en pilules, effet actuel et suivant, coût avec icônes, matériaux manquants indiqués.
+- Trophées en médaillons, gagnés d'abord (du plus récent au plus ancien), cadenas pour les autres, barre de progression.
+- Vérifié en sombre, en clair et sur mobile avec le mode test (9 améliorations : passage d'Épave à Corvette, trophée « Chantier naval » débloqué). Types au vert.
+
+**Prochaine étape** : écran À faire, puis Pilote.
+
 ## 2026-10-29 (nuit, suite) — V2 : système de design, coque et écran Aujourd'hui
 
 **Contexte** : la V0 est figée au tag `v0.1-base` du dépôt `rpg-habitudes` ; ce dépôt `rpg-habitudes-v2` porte la refonte graphique.
