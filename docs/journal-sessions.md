@@ -2,6 +2,22 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-10-29 (nuit, suite) — V2 : système de design, coque et écran Aujourd'hui
+
+**Contexte** : la V0 est figée au tag `v0.1-base` du dépôt `rpg-habitudes` ; ce dépôt `rpg-habitudes-v2` porte la refonte graphique.
+
+**Décisions**
+
+- Direction graphique : **Nuit douce** (bleu nuit, lavande, pêche pour les récompenses) en thème sombre par défaut, **Aube orbitale** (crème, brume violette, corail) en thème clair, plus un mode automatique.
+- Police Nunito (ronde, douce), icônes Lucide, coins très arrondis, ombres légères, champ d'étoiles discret en fond.
+- Les écrans s'écrivent avec des jetons de thème ; la palette `zinc` et les teintes d'accent sont rebranchées sur le thème, donc les écrans pas encore refaits suivent déjà les deux thèmes.
+- Navigation repensée : barre latérale groupée (Bord, Voyage, Pilote) avec la carte du pilote (niveau, XP, matériaux) ; sur mobile, barre flottante à 4 écrans + « Plus ». « Perso » devient « Pilote » dans le menu.
+- Stockage V2 séparé (`rpg-habitudes-v2:*`), import en lecture seule des données V0.
+
+**Réalisé** : jetons et thèmes (`app.css`, `theme.svelte.ts`, script anti-flash dans `app.html`), composants `OrbitRing`, `LevelRing`, `LootLine`, `ThemeSwitch`, `Gauges` et `TierButtons` refaits ; écran Aujourd'hui refait (en-tête avec le secteur du jour, orbite elliptique autour de Kronos, jauges illustrées, cartes de routine avec gain affiché après validation, todo du jour, journal de bord). Vérifié dans le navigateur en sombre, en clair et sur mobile. Tests 21/21, types au vert.
+
+**Prochaine étape** : refaire l'écran Vaisseau (soute, modules, compétences, trophées en vrai visuel), puis À faire et Pilote.
+
 ## 2026-10-29 (nuit, suite) — Calibrage avec le mode test
 
 **Méthode** : scénario de 12 semaines généré par le mode test (utilisateur simulé à ~75 % de réussite), mesures semaine par semaine (XP, matériaux par source, niveaux, trophées, jauge Motivation), puis rejeu des mêmes journées avec des réglages candidats pour la Motivation.

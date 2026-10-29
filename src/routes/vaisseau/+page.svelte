@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Orbit from '#lib/components/Orbit.svelte';
+	import OrbitRing from '#lib/components/OrbitRing.svelte';
 	import { MODULE_MAX_LEVEL, SKILL_MAX_LEVEL } from '#lib/config.ts';
 	import { formatShort, today } from '#lib/dates.ts';
 	import { moduleLevel, skillLevel } from '#lib/engine/effects.ts';
@@ -51,7 +51,7 @@
 
 <h2 class="h2 mb-2">Orbite de la semaine</h2>
 <div class="card mb-5">
-	<Orbit {sectors} current={today()} />
+	<div class="mx-auto max-w-lg"><OrbitRing {sectors} current={today()} /></div>
 	<p class="mt-3 text-xs text-zinc-500">
 		Un secteur s'allume quand toutes les obligations du jour sont faites (un jour de repos compte aussi) ; à moitié fait, il compte pour un demi-secteur. {sectorsLit(sectors)}/7 allumés pour l'instant :
 		l'amarrage au Havre (revue hebdo) verserait <strong class="text-zinc-700">{lootLabel(orbitReward(data, sectors)) || 'rien encore'}</strong>, avec un bonus si les sept sont allumés.

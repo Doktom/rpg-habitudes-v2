@@ -20,9 +20,9 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 
 **Prochaines étapes, par ordre de priorité**
 
-1. Refonte graphique et UX (direction validée d'abord, puis système de design, puis écran par écran).
+1. Refonte graphique, écran par écran (système de design, coque et Aujourd'hui faits le 29/10 ; ensuite Vaisseau, À faire, Pilote, puis le reste).
 2. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`), à reporter ici.
-2. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
+3. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
 3. PWA installable + notifications (rappels d'habitudes, revue du dimanche).
 4. Vue mois du planning, revue mensuelle et arcs.
 5. V2 : Élan, hauts faits, mode guidé des routines avec minuteur, carte de progression des campagnes, intégration de l'app salle.
@@ -59,7 +59,15 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 - Motivation plutôt que punition. Les matériaux du vaisseau ne se perdent jamais : ils se dépensent seulement sur une amélioration choisie. Lore et mécaniques spatiales : `docs/univers.md`.
 - Mode test (écran Personnage) : stockage séparé, date simulée via `setClock` dans `src/lib/dates.ts`. Toujours l'utiliser pour essayer la progression avant de calibrer.
 - Trading : on récompense le processus, jamais le P&L.
-- Visuel sobre d'abord, graphisme ajouté plus tard sans refonte.
+- V2 : beau et doux, dans l'univers spatial, sans perdre la lisibilité.
+
+## Système de design (V2)
+
+- **Thèmes** : Nuit douce (sombre, par défaut) et Aube orbitale (clair), plus « automatique ». Jetons dans `src/app.css` (`--page`, `--surface`, `--raised`, `--line`, `--ink`, `--muted`, `--accent`, `--reward`, `--done`, `--g-*` pour les jauges) et classes Tailwind associées (`bg-surface`, `text-muted`, `bg-accent-soft`…). Choix du thème : `src/lib/theme.svelte.ts`, appliqué avant l'affichage par le script de `src/app.html`.
+- **Écrire les écrans avec les jetons** (`bg-surface`, `text-ink`, `text-muted`, `border-line`, `bg-accent`…) plutôt qu'avec des couleurs Tailwind. La palette `zinc` est rebranchée sur la rampe neutre du thème, et les teintes d'accent ont une version sombre générée par `node scripts/gen-dark-hues.mjs` (`src/theme-hues-dark.css`) : ajouter une teinte là si un écran en utilise une nouvelle. Pas de `bg-white`/`text-white`.
+- **Classes de composants** : `.card`, `.btn`, `.btn-primary`, `.btn-ghost`, `.input`, `.label`, `.h2`, `.eyebrow`, `.chip`.
+- **Composants** : `OrbitRing` (orbite elliptique autour de Kronos), `LevelRing`, `Gauges`, `TierButtons` (palier en pilule), `LootLine` (butin avec icônes), `ThemeSwitch`. Icônes : `@lucide/svelte`. Police : Nunito (`@fontsource-variable/nunito`, embarquée).
+- **Navigation** : barre latérale groupée (Bord, Voyage, Pilote) sur PC ; sur mobile, une barre flottante à 4 écrans + « Plus ».
 
 ## Stack
 

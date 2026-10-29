@@ -47,7 +47,7 @@
 				out.push({ id: h.id, label: h.name, start: toMin(h.slot), end: toMin(h.slot) + 30, color: 'bg-teal-50 border-teal-300 text-teal-900' });
 		for (const t of data.tasks)
 			if (t.date === d && t.start)
-				out.push({ id: t.id, label: t.title, start: toMin(t.start), end: t.end ? toMin(t.end) : toMin(t.start) + 60, color: t.done ? 'bg-zinc-100 border-zinc-300 text-zinc-400 line-through' : 'bg-white border-zinc-400', task: t });
+				out.push({ id: t.id, label: t.title, start: toMin(t.start), end: t.end ? toMin(t.end) : toMin(t.start) + 60, color: t.done ? 'bg-zinc-100 border-zinc-300 text-zinc-400 line-through' : 'bg-surface border-zinc-400', task: t });
 		return out;
 	}
 
