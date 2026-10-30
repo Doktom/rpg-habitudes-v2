@@ -2,6 +2,19 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-10-30 — V2 : écran Pilote
+
+**Réalisé**
+
+- Fiche du pilote : grand anneau de niveau, XP vers le niveau suivant et total, trois indicateurs (jours sans faille, trophées, points de compétence à dépenser, ces deux derniers menant au Vaisseau).
+- Jauges en pleine largeur.
+- Disciplines : radar SVG des stats (`StatRadar`) à côté des cartes de stats (niveau dans une pastille à la couleur de la stat, barre de progression, sous-compétences en tuiles).
+- Journal de bord regroupé par jour, avec une icône par type d'événement (routine, danse, tâche, quête, revue, trophée, vaisseau, bilan du jour), XP, butin et variations de jauges ; « Voir plus » par lots de 25.
+- Réglages en trois cartes : apparence (thème), mode test, données (export, copie, import, réinitialisation confirmée).
+- Vérifié avec le mode test en largeur PC (1 280 px) et mobile (375 px) : aucun débordement horizontal, libellés du radar entiers après élargissement du cadre. Types au vert.
+
+**Prochaine étape** : Planning, puis Campagnes, Revue, Habitudes, Danse.
+
 ## 2026-10-29 (nuit, suite) — V2 : écran À faire
 
 **Réalisé**
