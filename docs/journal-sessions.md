@@ -2,6 +2,14 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-11-02 — Reprise sur plusieurs PC
+
+**Décision** : pour reprendre le projet d'un PC à l'autre, GitHub sert de synchro (pas OneDrive) ; `CLAUDE.md` et ce journal portent tout le contexte nécessaire.
+
+**Réalisé** : section « Travailler sur plusieurs PC » dans `CLAUDE.md` (`git pull` en début de session, push systématique en fin) ; état et numérotation des prochaines étapes corrigés.
+
+**Prochaine étape** : reprendre la refonte graphique avec l'écran Planning, puis Campagnes, Revue, Habitudes, Danse.
+
 ## 2026-10-30 — V2 : écran Pilote
 
 **Réalisé**

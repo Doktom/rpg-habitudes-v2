@@ -12,22 +12,32 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 
 ## Démarrer une session
 
+0. `git pull` : le travail a pu avancer sur un autre PC (voir « Travailler sur plusieurs PC »).
 1. Lire la carte mentale (voir « Carte mentale : outil de pilotage »), puis l'entrée la plus récente de `docs/journal-sessions.md` et `docs/cahier-des-charges.md`.
 2. `npm install` puis `npm test` (21 tests attendus au vert) et `npm run dev`.
 3. Si le doc partagé Claude Docs n'est pas accessible, `docs/cahier-des-charges.md` fait foi.
 
-**État au 29/10/2026** : V2 créée à partir de la V0 ; refonte graphique à démarrer (direction artistique à valider avec l'utilisateur).
+**État au 30/10/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire et Pilote refaits.
 
 **Prochaines étapes, par ordre de priorité**
 
 1. Refonte graphique, écran par écran (système de design, coque, Aujourd'hui, Vaisseau, À faire et Pilote faits ; restent Planning, Campagnes, Revue, Habitudes, Danse).
 2. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`), à reporter ici.
 3. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
-3. PWA installable + notifications (rappels d'habitudes, revue du dimanche).
-4. Vue mois du planning, revue mensuelle et arcs.
-5. V2 : Élan, hauts faits, mode guidé des routines avec minuteur, carte de progression des campagnes, intégration de l'app salle.
+4. PWA installable + notifications (rappels d'habitudes, revue du dimanche).
+5. Vue mois du planning, revue mensuelle et arcs.
+6. V2 : Élan, hauts faits, mode guidé des routines avec minuteur, carte de progression des campagnes, intégration de l'app salle.
 
 Questions encore ouvertes : nom de l'app et des stats, habitudes de trading détaillées, chapitres réels des campagnes Trading et Maison, stack de l'app salle.
+
+## Travailler sur plusieurs PC
+
+L'utilisateur travaille sur plusieurs PC. GitHub est la seule source de vérité : la mémoire et l'historique des conversations de Claude restent sur chaque PC, donc tout ce qu'il faut pour reprendre doit être dans le dépôt (ce fichier, le journal, le cahier des charges, la carte mentale).
+
+- **Début de session** : `git pull`, puis `npm install` si `package-lock.json` a changé.
+- **Fin de session** : journal à jour (section « Prochaine étape » précise, avec ce qui est en cours), « État » et « Prochaines étapes » ci-dessus à jour, commit et `git push`. Ne jamais laisser de travail non poussé : l'autre PC ne le verrait pas.
+- Un travail inachevé se pousse quand même, sur une branche, en le signalant dans le journal.
+- Premier lancement sur un nouveau PC : `git clone https://github.com/Doktom/rpg-habitudes-v2.git`, puis Node.js 22+ et `npm install`. Éviter de cloner dans un dossier synchronisé (OneDrive) : la synchro de `.git` et `node_modules` peut créer des conflits.
 
 ## Documents de référence
 
