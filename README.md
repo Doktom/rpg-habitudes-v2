@@ -1,5 +1,7 @@
 # App RPG d'habitudes — V2
 
+> **Version figée.** La suite est dans la V3 : https://github.com/Doktom/rpg-habitudes-v3 (en ligne : https://doktom.github.io/rpg-habitudes-v3/).
+
 Webapp perso (mobile + PC) de suivi d'habitudes, de planification hebdo/mensuelle et de projets au long cours, avec des mécaniques de RPG dans un univers spatial.
 
 Statut : **V2 en cours**, refonte graphique et UX à partir de la V0 ([Doktom/rpg-habitudes](https://github.com/Doktom/rpg-habitudes), tag `v0.1-base`). Les données sont stockées dans le navigateur ; au premier lancement, la V2 importe une copie des données de la V0.

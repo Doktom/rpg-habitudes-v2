@@ -2,6 +2,8 @@
 
 Webapp perso de suivi d'habitudes, planification hebdo/mensuelle et projets au long cours, avec une couche RPG (stats, XP, jauges Discipline / Motivation / Inspiration, campagnes) dans un univers spatial (le Sillage, `docs/univers.md`). Langue du projet : français.
 
+> **Ce dépôt est figé (tag `v0.2-base`). Le travail continue dans la V3 : https://github.com/Doktom/rpg-habitudes-v3** (site : https://doktom.github.io/rpg-habitudes-v3/). Pour reprendre sur un autre PC, cloner la V3 et lire son `CLAUDE.md`. Ici, seulement des correctifs.
+
 ## Ce dépôt : la V2 graphique
 
 Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la V0, avec une grosse refonte de l'UI et de l'UX, belle et douce, dans l'univers spatial.
