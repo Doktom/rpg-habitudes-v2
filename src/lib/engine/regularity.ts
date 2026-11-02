@@ -221,13 +221,14 @@ export function regularityRewards(data: AppData, date: ISODate): RegularityRewar
 }
 
 // Avancement de la semaine pour une habitude : fait / attendu, pour les petites barres de l'écran.
-export function habitWeekProgress(data: AppData, habit: Habit, date: ISODate): { done: number; expected: number } {
+// Avec upTo, seuls les jours écoulés comptent (une semaine en cours n'est pas encore « ratée »).
+export function habitWeekProgress(data: AppData, habit: Habit, date: ISODate, upTo?: ISODate): { done: number; expected: number } {
 	const monday = startOfWeek(date);
 	if (habit.frequency.type === 'weekly') return { done: logsInWeek(data, habit.id, monday).length, expected: habit.frequency.times };
 	let done = 0;
 	let expected = 0;
 	for (const d of range(monday, addDays(monday, 6))) {
-		if (!isDueOn(habit, d) || skipped(data, d)) continue;
+		if (!isDueOn(habit, d) || skipped(data, d) || (upTo && d > upTo)) continue;
 		expected++;
 		if (logged(data, habit.id, d)) done++;
 	}

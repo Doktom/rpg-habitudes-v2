@@ -17,11 +17,11 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 2. `npm install` puis `npm test` (29 tests attendus au vert) et `npm run dev`.
 3. Si le doc partagé Claude Docs n'est pas accessible, `docs/cahier-des-charges.md` fait foi.
 
-**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes refaits ; récompenses de régularité, nouvelles habitudes (lecture, ménage, prendre l'air) écran Carnet et boucliers de série ajoutés.
+**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning, Campagnes et Revue refaits ; récompenses de régularité, nouvelles habitudes (lecture, ménage, prendre l'air) écran Carnet et boucliers de série ajoutés.
 
 **Prochaines étapes, par ordre de priorité**
 
-1. Refonte graphique, écran par écran (système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes faits ; restent Revue, Habitudes, Danse).
+1. Refonte graphique, écran par écran (système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning, Campagnes et Revue faits ; restent Habitudes, Danse).
 2. Retours d'usage réel de la V0 (corrections, calibrage des valeurs d'XP et de jauges dans `src/lib/config.ts`), à reporter ici.
 3. Supabase : auth + tables du modèle de données, en remplacement de `load`/`persist` dans `store.svelte.ts` ; import du JSON exporté depuis la V0.
 4. PWA installable + notifications (rappels d'habitudes, revue du dimanche).

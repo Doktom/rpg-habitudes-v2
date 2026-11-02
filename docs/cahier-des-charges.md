@@ -203,6 +203,8 @@ La revue hebdo (dimanche, environ 10 min) et la revue mensuelle sont des parcour
 4. Planification : 3 priorités de la semaine, boss de la semaine, créneaux de la salle, jours de repos.
 5. Récompense : +50 XP et +25 Inspiration.
 
+**V2 (02/11/2026)** : la revue hebdo est un « amarrage au Havre » en cinq étapes : Bilan (chiffres, orbite, jauges, habitude par habitude avec séries, exploits de la semaine : récompenses de régularité, trophées, boucliers), Questions, Ajuster (passer en bonus une habitude obligatoire ratée 3 fois ou plus ; replanifier ou abandonner les tâches en retard), Cap (3 priorités, une quête de campagne à faire avancer qui crée une tâche liée, jours de repos de la semaine suivante), Amarrage (récompense affichée, puis versée). Le brouillon est gardé si l'on quitte l'écran. Lundi et mardi, la revue porte sur la semaine passée si elle n'a pas été faite.
+
 **Revue mensuelle** : même trame sur le mois, plus le point sur chaque campagne (chapitre en cours, prochaine étape, pause ou reprise), l'évolution des stats et le choix de l'arc du mois suivant.
 
 Les réponses sont archivées et consultables : elles forment un journal de bord.

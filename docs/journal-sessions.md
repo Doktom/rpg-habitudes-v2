@@ -2,6 +2,24 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-11-02 (suite) — V2 : écran Revue
+
+**Réalisé**
+
+- La revue hebdo devient l'« amarrage au Havre », un parcours en cinq étapes avec une barre d'étapes cliquable et des boutons Retour / Suivant :
+  1. **Bilan** : XP, obligations tenues, secteurs allumés, journées complètes ; orbite de la semaine avec le détail jour par jour ; jauges ; habitude par habitude (barre, fait / attendu sur les jours écoulés, série) avec l'habitude tenue à 100 % mise en avant ; exploits de la semaine (récompenses de régularité, trophées, boucliers utilisés).
+  2. **Questions** : ce qui a marché, ce qui a coincé, ce que j'ajuste, avec des invites bienveillantes.
+  3. **Ajuster** : passer en bonus une habitude obligatoire ratée 3 fois ou plus ; tâches en retard à remettre dans « Cette semaine », « Un jour » ou à abandonner.
+  4. **Cap** : trois priorités, une quête de campagne de la semaine (crée une tâche « Avancer : … » liée à la quête), jours de repos de la semaine suivante.
+  5. **Amarrage** : récompense affichée (+50 XP, Cellules, butin d'orbite, +25 Inspiration), puis versée avec une notification.
+- Brouillon gardé par semaine si l'on quitte l'écran. Lundi et mardi, la revue porte sur la semaine passée si elle n'a pas été faite. Écran « Orbite bouclée » une fois la revue faite, et journal des revues replié en bas.
+- `habitWeekProgress` accepte une date limite pour ne compter que les jours écoulés.
+- Vérifié avec le mode test (semaine jouée jusqu'au samedi) : bilan rempli, brouillon conservé, quête choisie, priorité saisie, amarrage (+50 XP, 16 Alliages, 3 Cellules), tâches créées, écran « Orbite bouclée » ; mobile 375 px sans débordement. Types, tests et build au vert.
+
+**Pas fait** : revue mensuelle (point campagnes, évolution des stats, arc du mois).
+
+**Prochaine étape** : Habitudes, puis Danse.
+
 ## 2026-11-02 (suite) — Boucliers de série
 
 **Décisions** : les boucliers sont des jokers que l'utilisateur choisit d'utiliser (« il ne faut pas en abuser ») : le lendemain d'un raté qui casse une série d'au moins 3 jours, l'écran Aujourd'hui propose « Utiliser un bouclier » ou « Laisser filer ». Rien n'est dépensé automatiquement. Le jour reste un raté pour la Discipline et la Motivation (pas d'XP) : seules les séries et les semaines pleines sont sauves. Un bouclier toutes les 7 journées complètes, ou fabriqué au chantier pour 6 Cellules ; réserve de 2, agrandie par la Coque renforcée (+1 tous les 2 niveaux).
