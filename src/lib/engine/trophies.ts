@@ -22,6 +22,9 @@ export interface TrophyContext {
 	bestStatLevel: number;
 	bestModule: number;
 	moduleTotal: number;
+	completeDays: number;
+	longestMilestone: number;
+	fullWeeks: number;
 }
 
 export interface TrophyDef {
@@ -52,7 +55,11 @@ export function trophyContext(data: AppData, asOf: ISODate): TrophyContext {
 		).length,
 		bestStatLevel: Math.max(1, ...data.domains.filter((d) => !d.parentId).map((d) => levelInfo(byDomain[d.id] ?? 0).level)),
 		bestModule: Math.max(0, ...SHIP_MODULES.map((m) => moduleLevel(data, m.id))),
-		moduleTotal: moduleTotal(data)
+		moduleTotal: moduleTotal(data),
+		completeDays: data.events.filter((e) => e.source.startsWith('reg:day:')).length,
+		// Plus grand palier de série atteint (source « reg:streak:<habitude>:<jours>:<date> »).
+		longestMilestone: Math.max(0, ...data.events.filter((e) => e.source.startsWith('reg:streak:')).map((e) => +e.source.split(':')[3])),
+		fullWeeks: data.events.filter((e) => e.source.startsWith('reg:week:')).length
 	};
 }
 
@@ -68,6 +75,9 @@ export const TROPHIES: TrophyDef[] = [
 	{ id: 'orbit-1', name: 'Première orbite', lore: "Tu amarres au Havre pour la première fois.", hint: 'Faire une revue hebdo', reward: { xp: 40, loot: { metal: 5 } }, test: (c) => c.weeklyReviews >= 1 },
 	{ id: 'orbit-4', name: 'Quatre orbites', lore: 'Un mois de révolutions, la carte se dessine.', hint: 'Faire 4 revues hebdo', reward: { xp: 120, loot: { energy: 5, crystal: 1 } }, test: (c) => c.weeklyReviews >= 4 },
 	{ id: 'orbit-perfect', name: 'Orbite parfaite', lore: 'Sept secteurs allumés, pas un faux pas.', hint: 'Une semaine avec les 7 secteurs allumés', reward: { xp: 150, loot: { crystal: 3 } }, test: (c) => c.perfectOrbits >= 1 },
+	{ id: 'days-10', name: 'Pilote fiable', lore: 'Dix journées où tout tourne rond à bord.', hint: '10 journées complètes', reward: { xp: 80, loot: { energy: 4 } }, test: (c) => c.completeDays >= 10 },
+	{ id: 'habit-30', name: 'Habitude ancrée', lore: "Trente jours : ce n'est plus un effort, c'est toi.", hint: 'Une série de 30 jours sur une habitude', reward: { xp: 250, loot: { crystal: 3 } }, test: (c) => c.longestMilestone >= 30 },
+	{ id: 'weeks-4', name: 'Métronome', lore: 'Quatre semaines sans faille, réglé comme une horloge de bord.', hint: '4 semaines sans faille', reward: { xp: 300, loot: { crystal: 4 } }, test: (c) => c.fullWeeks >= 4 },
 	{ id: 'level-5', name: 'Pilote confirmé', lore: 'Le cockpit commence à te ressembler.', hint: 'Atteindre le niveau 5', reward: { xp: 0, loot: { energy: 4, crystal: 1 } }, test: (c) => c.level >= 5 },
 	{ id: 'level-10', name: 'As du cockpit', lore: "On parle de toi dans les ports de Kronos.", hint: 'Atteindre le niveau 10', reward: { xp: 0, loot: { crystal: 4 } }, test: (c) => c.level >= 10 },
 	{ id: 'stat-5', name: 'Spécialiste', lore: 'Une discipline devient ta signature.', hint: 'Une stat au niveau 5', reward: { xp: 100, loot: { energy: 4 } }, test: (c) => c.bestStatLevel >= 5 },

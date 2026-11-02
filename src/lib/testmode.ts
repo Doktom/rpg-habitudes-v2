@@ -39,11 +39,6 @@ function extras(data: AppData, start: ISODate) {
 			domains: [{ domainId: 'bienetre', weight: 100 }], createdAt: start
 		},
 		{
-			id: 'lecture', name: 'Lecture', form: 'simple', kind: 'bonus', frequency: { type: 'weekly', times: 4 },
-			tiers: { min: '5 pages', normal: '20 pages', excellent: '1 chapitre' }, moment: 'evening', difficulty: 'easy',
-			domains: [{ domainId: 'projets', weight: 100 }], createdAt: start
-		},
-		{
 			id: 'cuisine-maison', name: 'Cuisiner un vrai repas', form: 'simple', kind: 'obligatory', frequency: { type: 'weekly', times: 2 },
 			tiers: { min: 'Plat simple', normal: 'Repas complet', excellent: 'Nouvelle recette' }, moment: 'evening', difficulty: 'medium',
 			domains: [{ domainId: 'cuisine', weight: 100 }], createdAt: start

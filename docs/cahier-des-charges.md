@@ -35,7 +35,9 @@ Chaque domaine de vie est une stat RPG ; certaines ont des sous-compétences ave
 | Mobilité / kiné | Souplesse | — | Routines kiné matin et soir, renfos |
 | Trading | Stratégie | — | Analyse, journal, étude, backtest |
 | Projets perso | Créativité | Un par campagne (ex. Maison) | Sessions de travail, étapes de campagne |
-| Bien-être (optionnel) | Sérénité | — | Sommeil, méditation, lecture |
+| Bien-être (optionnel) | Sérénité | — | Sommeil, méditation, prendre l'air |
+| Lecture & culture | Savoir | — | Lecture quotidienne |
+| Maison | Intendance | — | Ménage express |
 
 Une habitude ou une quête peut alimenter plusieurs stats avec une répartition (ex. réveil musculaire : 70 % Souplesse, 30 % Force). L'utilisateur peut créer, renommer ou archiver des domaines. **V0** : une catégorie (nom, nom de stat, couleur) se crée directement depuis le formulaire d'une habitude, via « + Nouvelle catégorie (stat) », et devient la stat principale de l'habitude.
 
@@ -90,7 +92,17 @@ Trois jauges de 0 à 100 remplacent les points de vie : elles modulent la progre
 
 ## Univers, vaisseau et récompenses
 
-Toute action rapporte de l'XP **et** des matériaux (Alliage, Cellule, Cristal) selon sa difficulté. Les matériaux améliorent les quatre modules du **Sillage**, un vaisseau en orbite autour de Kronos dont la révolution de 7 jours reproduit la semaine : un secteur par jour, allumé quand les obligations sont faites, et une orbite bouclée à la revue hebdo qui verse du butin. Les niveaux du pilote donnent des points de compétence ; 19 trophées récompensent les jalons.
+Toute action rapporte de l'XP **et** des matériaux (Alliage, Cellule, Cristal) selon sa difficulté. Les matériaux améliorent les quatre modules du **Sillage**, un vaisseau en orbite autour de Kronos dont la révolution de 7 jours reproduit la semaine : un secteur par jour, allumé quand les obligations sont faites, et une orbite bouclée à la revue hebdo qui verse du butin. Les niveaux du pilote donnent des points de compétence ; 22 trophées récompensent les jalons.
+
+**Régularité** (02/11/2026) : la constance est récompensée en plus de chaque action, au moment où elle se produit (notification de gain), et la récompense disparaît si l'on décoche ce qui l'a déclenchée.
+
+- **Journée complète** : toutes les obligations du jour faites (+25 XP, 1 Cellule). **Journée parfaite** : les bonus du jour aussi (+45 XP, 2 Cellules, 2 Alliages).
+- **Séries d'une habitude** : jours dus consécutifs tenus (repos et jours non dus ne cassent rien). Paliers à 7, 14, 30, 60, 100, 200 et 365 jours, de +40 XP à +2 000 XP, avec Cellules puis Cristaux.
+- **Semaine pleine d'une habitude** : tous ses jours dus de la semaine, ou son objectif « X fois par semaine » atteint (au moins 2 séances). +30 XP, puis +10 XP par semaine d'affilée (jusqu'à +100) ; 1 Cristal à 4, 8, 12, 26 et 52 semaines d'affilée.
+- **Semaine pleine d'une discipline** (Danse, Sport, Mobilité…) : tout ce qui la concerne fait dans la semaine, cours de danse compris (au moins 3 éléments) : +60 XP, 3 Cellules.
+- **Semaine sans faille** : toutes les obligations de la semaine : +150 XP, 2 Cristaux.
+- L'écran Aujourd'hui montre la progression vers la journée complète, les séries en cours (flamme et prochain palier) et la semaine de chaque habitude en sept pastilles.
+- XP multipliée par la Discipline et les bonus du vaisseau, comme le reste. Valeurs dans `REGULARITY` (`src/lib/config.ts`), à calibrer à l'usage.
 
 Le détail (lore, tables de butin, coûts, effets, trophées) est dans `docs/univers.md`. Les noms sont provisoires. Le graphisme viendra dans une grosse mise à jour ultérieure.
 
@@ -208,7 +220,7 @@ Sur iPhone, les notifications nécessitent d'installer l'app sur l'écran d'accu
 
 ## Écrans
 
-Neuf écrans principaux ; l'écran Aujourd'hui est la page d'accueil sur mobile.
+Dix écrans principaux ; l'écran Aujourd'hui est la page d'accueil sur mobile.
 
 | Écran | Contenu | Usage principal |
 | --- | --- | --- |
@@ -216,6 +228,7 @@ Neuf écrans principaux ; l'écran Aujourd'hui est la page d'accueil sur mobile.
 | À faire | Todo list : listes (aujourd'hui, semaine, mois, un jour), tâches détaillées, catégories, terminées | Les deux |
 | Vaisseau | Soute de matériaux, orbite de la semaine, modules, compétences du pilote, trophées | Les deux |
 | Planning | Listes + agenda jour/semaine/mois, glisser-déposer | PC surtout |
+| Carnet | Listes à cocher et notes libres qui ne sont pas des tâches : courses, déco à acheter, à essayer, à visiter, livres à lire, à penser ; un élément peut devenir une tâche | Mobile surtout |
 | Personnage | Niveau, stats et sous-compétences, jauges, hauts faits, séries | Les deux |
 | Campagnes | Liste des campagnes, carte de progression, chapitres, quêtes | PC surtout |
 | Habitudes | Création et édition des habitudes, routines, programmes ; historique | PC surtout |

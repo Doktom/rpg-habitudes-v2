@@ -188,6 +188,27 @@ export interface ProgressEvent {
 	campaignId?: string; // progression sur une campagne (pour l'Inspiration)
 }
 
+// Carnet : une liste (éléments à cocher ou non) ou une note libre.
+export interface NoteItem {
+	id: string;
+	text: string;
+	done?: boolean;
+	createdAt: ISODate;
+}
+
+export interface NoteList {
+	id: string;
+	name: string;
+	kind: 'list' | 'note';
+	icon: string; // clé d'icône, voir l'écran Carnet
+	color: string;
+	items: NoteItem[];
+	body?: string; // texte libre (note, ou précisions d'une liste)
+	pinned?: boolean;
+	createdAt: ISODate;
+	updatedAt?: ISODate;
+}
+
 export interface AppData {
 	version: 1;
 	domains: Domain[];
@@ -208,4 +229,6 @@ export interface AppData {
 	skills: Partial<Record<SkillId, number>>; // niveaux des compétences du pilote
 	trophies: Record<string, ISODate>; // trophée → date de déblocage
 	testClock?: ISODate; // mode test : date simulée
+	notebook: NoteList[]; // carnet : listes et notes libres (courses, déco, à essayer…)
+	contentVersion?: number; // contenus de départ déjà ajoutés (voir addContent dans seed.ts)
 }

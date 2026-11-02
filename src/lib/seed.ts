@@ -1,3 +1,4 @@
+import { today } from './dates';
 import type { AppData, Habit, ISODate } from './types';
 
 const tiers = (min: string, normal: string, excellent: string) => ({ min, normal, excellent });
@@ -87,7 +88,7 @@ export function seed(today: ISODate): AppData {
 		}
 	];
 
-	return {
+	const data: AppData = {
 		version: 1,
 		domains: [
 			{ id: 'danse', name: 'Danse', stat: 'Rythme', color: '#db2777' },
@@ -137,8 +138,10 @@ export function seed(today: ISODate): AppData {
 		lastProcessedDay: undefined,
 		ship: { modules: {} },
 		skills: {},
-		trophies: {}
+		trophies: {},
+		notebook: []
 	};
+	return addContent(data, today);
 }
 
 // Complète des données plus anciennes (importées ou déjà stockées) avec les champs ajoutés depuis.
@@ -147,5 +150,67 @@ export function withDefaults(data: AppData): AppData {
 	data.ship.modules ??= {};
 	data.skills ??= {};
 	data.trophies ??= {};
+	data.notebook ??= [];
+	return addContent(data, today());
+}
+
+// Contenus ajoutés après coup, versés une seule fois (une habitude supprimée ensuite ne revient pas).
+const CONTENT_VERSION = 2;
+
+export function addContent(data: AppData, date: ISODate): AppData {
+	if ((data.contentVersion ?? 1) >= CONTENT_VERSION) return data;
+	const addDomain = (d: AppData['domains'][number]) => data.domains.some((x) => x.id === d.id) || data.domains.push(d);
+	const addHabit = (h: Habit) => data.habits.some((x) => x.id === h.id) || data.habits.push(h);
+	const addList = (l: AppData['notebook'][number]) => data.notebook.some((x) => x.id === l.id) || data.notebook.push(l);
+
+	addDomain({ id: 'culture', name: 'Lecture & culture', stat: 'Savoir', color: '#4f46e5' });
+	addDomain({ id: 'maison', name: 'Maison', stat: 'Intendance', color: '#b45309' });
+	addHabit({
+		id: 'lecture',
+		name: 'Lecture',
+		form: 'simple',
+		kind: 'bonus',
+		frequency: { type: 'daily' },
+		tiers: tiers('5 min', '10 min', '30 min'),
+		moment: 'evening',
+		difficulty: 'easy',
+		domains: [{ domainId: 'culture', weight: 100 }],
+		createdAt: date
+	});
+	addHabit({
+		id: 'menage',
+		name: 'Ménage express',
+		form: 'simple',
+		kind: 'bonus',
+		frequency: { type: 'daily' },
+		tiers: tiers('5 min de rangement', '15 min de ménage', "Une pièce à fond"),
+		moment: 'day',
+		difficulty: 'easy',
+		domains: [{ domainId: 'maison', weight: 100 }],
+		createdAt: date
+	});
+	addHabit({
+		id: 'air',
+		name: "Prendre l'air",
+		form: 'simple',
+		kind: 'bonus',
+		frequency: { type: 'daily' },
+		tiers: tiers('5 min dehors', '20 min de marche', '1 h dehors'),
+		moment: 'day',
+		difficulty: 'easy',
+		domains: [{ domainId: 'bienetre', weight: 100 }],
+		createdAt: date
+	});
+
+	const list = (id: string, name: string, icon: string, color: string) =>
+		addList({ id, name, kind: 'list', icon, color, items: [], createdAt: date });
+	list('nb-courses', 'Courses', 'cart', '#16a34a');
+	list('nb-deco', 'Déco à acheter', 'sofa', '#b45309');
+	list('nb-essayer', 'À essayer', 'sparkles', '#9333ea');
+	list('nb-visiter', 'À visiter', 'pin', '#0284c7');
+	list('nb-livres', 'Livres à lire', 'book', '#4f46e5');
+	addList({ id: 'nb-penser', name: 'À penser', kind: 'note', icon: 'bulb', color: '#e11d48', items: [], body: '', createdAt: date });
+
+	data.contentVersion = CONTENT_VERSION;
 	return data;
 }

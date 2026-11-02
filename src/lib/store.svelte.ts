@@ -1,13 +1,15 @@
 import { DANCE_XP_DIFFICULTY, GAUGES, LOOT_REWARDS, SKILL_MAX_LEVEL, XP_REWARDS } from './config';
-import { addDays, setClock, today } from './dates';
+import { addDays, range, setClock, today } from './dates';
 import { inspirationBonus, moduleLevel, skillLevel, taskBonus, tierFactor, xpBonus } from './engine/effects';
 import { actionXp, bonusXp, splitXp } from './engine/xp';
 import { closeDay, daysToClose, discipline } from './engine/progress';
 import { addLoot, canAfford, lootFor, materials, negate, orbit, orbitReward, scaleLoot, sectorsLit, skillPoints, upgradeCost } from './engine/ship';
+import { regularityRewards } from './engine/regularity';
 import { newTrophies } from './engine/trophies';
 import { uid } from './id';
 import { seed, withDefaults } from './seed';
 import { autoPlay, buildScenario, validateDay } from './testmode';
+import { toasts } from './toasts.svelte';
 import { SHIP_MODULES, SKILLS } from './universe';
 import type {
 	AppData,
@@ -114,6 +116,26 @@ export class Store {
 		this.data.events = this.data.events.filter((e) => e.source !== source);
 	}
 
+	// Recalcule les récompenses de régularité du jour donné jusqu'à aujourd'hui (une coche peut boucler
+	// une série ou une semaine, une décoche peut la défaire). Les nouveaux gains s'annoncent par une notification.
+	private syncRegularity(from: ISODate) {
+		const end = today();
+		if (from > end) return;
+		const start = from < addDays(end, -400) ? addDays(end, -400) : from;
+		const before = new Set(this.data.events.filter((e) => e.source.startsWith('reg:')).map((e) => e.source));
+		this.data.events = this.data.events.filter((e) => !(e.source.startsWith('reg:') && e.date >= start));
+		const gained: ProgressEvent[] = [];
+		for (const d of range(start, end)) {
+			const disc = discipline(this.data, d);
+			for (const r of regularityRewards(this.data, d)) {
+				this.event({ date: d, source: r.source, label: r.label, xp: splitXp(bonusXp(r.xp, disc), r.shares), loot: r.loot });
+				if (!before.has(r.source)) gained.push(this.data.events[this.data.events.length - 1]);
+			}
+		}
+		if (this.suspended) return;
+		for (const e of gained) toasts.push({ title: e.label, xp: e.xp?.reduce((s, x) => s + x.amount, 0), loot: e.loot });
+	}
+
 	disciplineNow() {
 		return discipline(this.data, today());
 	}
@@ -135,6 +157,7 @@ export class Store {
 		const i = this.data.restDays.indexOf(date);
 		if (i >= 0) this.data.restDays.splice(i, 1);
 		else this.data.restDays.push(date);
+		this.syncRegularity(date);
 		this.persist();
 	}
 
@@ -164,12 +187,15 @@ export class Store {
 			gauge: { motivation: habit.kind === 'obligatory' ? m.obligatoryDone : m.bonusDone },
 			campaignId: habit.campaignId
 		});
+		this.syncRegularity(date);
 		this.persist();
 	}
 
 	unlog(logId: string) {
+		const log = this.data.habitLogs.find((l) => l.id === logId);
 		this.data.habitLogs = this.data.habitLogs.filter((l) => l.id !== logId);
 		this.dropEvents(`habit:${logId}`);
+		if (log) this.syncRegularity(log.date);
 		this.persist();
 	}
 
@@ -269,12 +295,15 @@ export class Store {
 			loot: lootFor(DANCE_XP_DIFFICULTY, factor),
 			gauge: { motivation: kind === 'obligatory' ? m.obligatoryDone : m.bonusDone }
 		});
+		this.syncRegularity(date);
 		this.persist();
 	}
 
 	unlogDance(logId: string) {
+		const log = this.data.danceLogs.find((l) => l.id === logId);
 		this.data.danceLogs = this.data.danceLogs.filter((l) => l.id !== logId);
 		this.dropEvents(`dance:${logId}`);
+		if (log) this.syncRegularity(log.date);
 		this.persist();
 	}
 

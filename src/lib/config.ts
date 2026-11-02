@@ -29,6 +29,31 @@ export const LOOT_REWARDS: Record<string, Loot> = {
 	orbitPerfect: { crystal: 3 } // 7 secteurs sur 7
 };
 
+// Récompenses de régularité (XP de base avant Discipline et bonus du vaisseau).
+export const REGULARITY = {
+	// Journée complète : toutes les obligations faites ; parfaite : les bonus du jour aussi.
+	dayComplete: { xp: 25, loot: { energy: 1 } as Loot },
+	dayPerfect: { xp: 45, loot: { energy: 2, metal: 2 } as Loot },
+	// Série d'une habitude (jours dus consécutifs tenus) : palier → récompense.
+	streakMilestones: [
+		{ days: 7, xp: 40, loot: { energy: 2 } as Loot },
+		{ days: 14, xp: 80, loot: { energy: 3 } as Loot },
+		{ days: 30, xp: 200, loot: { crystal: 2 } as Loot },
+		{ days: 60, xp: 400, loot: { crystal: 3 } as Loot },
+		{ days: 100, xp: 700, loot: { crystal: 5 } as Loot },
+		{ days: 200, xp: 1200, loot: { crystal: 8 } as Loot },
+		{ days: 365, xp: 2000, loot: { crystal: 12 } as Loot }
+	],
+	// Semaine pleine d'une habitude : grandit avec les semaines d'affilée (jusqu'à +70).
+	habitWeek: { xp: 30, perStreakWeek: 10, maxStreakBonus: 7, loot: { metal: 3 } as Loot },
+	habitWeekMilestones: [4, 8, 12, 26, 52], // semaines d'affilée : +1 Cristal
+	habitWeekMinItems: 2, // au moins 2 séances dans la semaine pour compter
+	// Semaine pleine d'une discipline (Danse, Sport, Mobilité…) : tout ce qui la concerne fait.
+	familyWeek: { xp: 60, loot: { energy: 3 } as Loot, minItems: 3 },
+	// Semaine sans faille : toutes les obligations de la semaine.
+	weekComplete: { xp: 150, loot: { crystal: 2 } as Loot }
+} as const;
+
 // Bonus des modules du vaisseau et des compétences du pilote, par niveau.
 export const EFFECTS = {
 	reactorXp: 0.06, // Réacteur : +6 % d'XP

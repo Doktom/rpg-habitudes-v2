@@ -55,6 +55,8 @@ Chaque habitude, danse, tâche ou quête rapporte de l'XP **et** du butin. Le bu
 
 Autres sources : quête 2 Alliage + 2 Cellules ; boss 2 Cellules + 2 Cristaux ; chapitre 3 Cristaux ; campagne 10 Cristaux ; revue hebdo 3 Cellules ; revue mensuelle 5 Cellules + 1 Cristal.
 
+Régularité : journée complète 1 Cellule (parfaite : 2 Cellules + 2 Alliages) ; séries d'une habitude de 2 Cellules (7 jours) à 12 Cristaux (365 jours) ; semaine pleine d'une habitude 3 Alliages (+1 Cristal à 4, 8, 12, 26 et 52 semaines d'affilée) ; semaine pleine d'une discipline 3 Cellules ; semaine sans faille 2 Cristaux. Trois trophées s'y ajoutent : Pilote fiable (10 journées complètes), Habitude ancrée (série de 30 jours), Métronome (4 semaines sans faille).
+
 ## L'orbite hebdomadaire
 
 La semaine est vue comme sept secteurs. Un secteur est **allumé** quand toutes les obligations du jour sont faites ; un jour de repos compte aussi. Le vaisseau avance d'un secteur par jour.

@@ -14,10 +14,10 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 
 0. `git pull` : le travail a pu avancer sur un autre PC (voir « Travailler sur plusieurs PC »).
 1. Lire la carte mentale (voir « Carte mentale : outil de pilotage »), puis l'entrée la plus récente de `docs/journal-sessions.md` et `docs/cahier-des-charges.md`.
-2. `npm install` puis `npm test` (21 tests attendus au vert) et `npm run dev`.
+2. `npm install` puis `npm test` (26 tests attendus au vert) et `npm run dev`.
 3. Si le doc partagé Claude Docs n'est pas accessible, `docs/cahier-des-charges.md` fait foi.
 
-**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes refaits.
+**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes refaits ; récompenses de régularité, nouvelles habitudes (lecture, ménage, prendre l'air) et écran Carnet ajoutés.
 
 **Prochaines étapes, par ordre de priorité**
 
@@ -76,7 +76,7 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 - **Thèmes** : Nuit douce (sombre, par défaut) et Aube orbitale (clair), plus « automatique ». Jetons dans `src/app.css` (`--page`, `--surface`, `--raised`, `--line`, `--ink`, `--muted`, `--accent`, `--reward`, `--done`, `--g-*` pour les jauges) et classes Tailwind associées (`bg-surface`, `text-muted`, `bg-accent-soft`…). Choix du thème : `src/lib/theme.svelte.ts`, appliqué avant l'affichage par le script de `src/app.html`.
 - **Écrire les écrans avec les jetons** (`bg-surface`, `text-ink`, `text-muted`, `border-line`, `bg-accent`…) plutôt qu'avec des couleurs Tailwind. La palette `zinc` est rebranchée sur la rampe neutre du thème, et les teintes d'accent ont une version sombre générée par `node scripts/gen-dark-hues.mjs` (`src/theme-hues-dark.css`) : ajouter une teinte là si un écran en utilise une nouvelle. Pas de `bg-white`/`text-white`.
 - **Classes de composants** : `.card`, `.btn`, `.btn-primary`, `.btn-ghost`, `.input`, `.label`, `.h2`, `.eyebrow`, `.chip`.
-- **Composants** : `ShipArt` (le Sillage en SVG, dont chaque partie reflète le niveau d'un module), `OrbitRing` (orbite elliptique autour de Kronos), `LevelRing`, `Gauges`, `TierButtons` (palier en pilule), `LootLine` (butin avec icônes), `ThemeSwitch`, `Segmented` (sélecteur à pilules), `TaskCheck` (case ronde colorée par l'effort), `StatRadar` (radar des disciplines), `Toasts` + `toasts.svelte.ts` (notification de gain : `toasts.push({ title, xp, loot })`). Icônes : `@lucide/svelte`. Police : Nunito (`@fontsource-variable/nunito`, embarquée).
+- **Composants** : `ShipArt` (le Sillage en SVG, dont chaque partie reflète le niveau d'un module), `OrbitRing` (orbite elliptique autour de Kronos), `LevelRing`, `Gauges`, `TierButtons` (palier en pilule), `LootLine` (butin avec icônes), `ThemeSwitch`, `Segmented` (sélecteur à pilules), `TaskCheck` (case ronde colorée par l'effort), `StatRadar` (radar des disciplines), `Toasts` + `toasts.svelte.ts` (notification de gain : `toasts.push({ title, xp, loot })`), `WeekDots` (la semaine d'une habitude en sept pastilles). Icônes : `@lucide/svelte`. Police : Nunito (`@fontsource-variable/nunito`, embarquée).
 - **Navigation** : barre latérale groupée (Bord, Voyage, Pilote) sur PC ; sur mobile, une barre flottante à 4 écrans + « Plus ».
 
 ## Stack
@@ -84,6 +84,8 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 - En place (V0) : SvelteKit 3 (Svelte 5, runes), TypeScript, Tailwind 4, Vitest, adapter-static en SPA. Données en localStorage via `src/lib/store.svelte.ts`.
 - Prévu : Supabase (Postgres, Auth, RLS, Edge Functions), PWA avec Web Push.
 - SvelteKit 3 : pas de `svelte.config.js`, la config passe par `sveltekit({...})` dans `vite.config.ts`. Imports internes avec `#lib/...` et l'extension explicite (`#lib/dates.ts`, `#lib/store.svelte.ts`).
+- Régularité : `src/lib/engine/regularity.ts` calcule les récompenses d'une date (journée complète, séries, semaines pleines) ; le store les recalcule de la date modifiée à aujourd'hui (`syncRegularity`, sources `reg:*`) à chaque coche ou décoche, et annonce les nouveaux gains par une notification.
+- Contenus ajoutés après coup : `addContent` dans `src/lib/seed.ts`, versé une fois grâce à `contentVersion` (une habitude supprimée ne revient pas). Pour ajouter un contenu, incrémenter `CONTENT_VERSION`.
 - Les règles de jeu vivent dans `src/lib/engine/` (fonctions pures, testées) et les constantes dans `src/lib/config.ts`. XP et jauges sont recalculées depuis le journal `events` : toute action ajoute ou retire des événements, jamais de compteur modifié directement.
 
 - Routage par hash (`router: { type: 'hash' }`) et `appDir: 'app'` : liens internes en `#/...`. Pas de `confirm()`/`alert()` (bloqués dans la page de test), utiliser `ConfirmButton`.

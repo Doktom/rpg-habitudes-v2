@@ -12,6 +12,7 @@
 		MoonStar,
 		Orbit,
 		Plus,
+		Sparkles,
 		Sunrise,
 		SunMedium
 	} from '@lucide/svelte';
@@ -20,9 +21,11 @@
 	import LootLine from '#lib/components/LootLine.svelte';
 	import OrbitRing from '#lib/components/OrbitRing.svelte';
 	import TierButtons from '#lib/components/TierButtons.svelte';
-	import { GAUGES } from '#lib/config.ts';
+	import WeekDots from '#lib/components/WeekDots.svelte';
+	import { GAUGES, REGULARITY } from '#lib/config.ts';
 	import { addDays, formatLong, formatShort, today, weekday } from '#lib/dates.ts';
-	import { discipline, gaugeValue, totalXp } from '#lib/engine/progress.ts';
+	import { discipline, gaugeValue, obligationsOn, totalXp } from '#lib/engine/progress.ts';
+	import { habitStreak, habitWeekDays, habitWeekStreak, nextMilestone } from '#lib/engine/regularity.ts';
 	import { danceClassesOn, habitsForDay, logsInWeek, partiesOn, routineOn, tasksForDay } from '#lib/engine/schedule.ts';
 	import { addLoot, orbit, orbitReward, sectorsLit } from '#lib/engine/ship.ts';
 	import { levelInfo } from '#lib/engine/xp.ts';
@@ -66,6 +69,22 @@
 	let sessionPick = $state<Record<string, string>>({});
 	let open = $state<Record<string, boolean>>({});
 	let newTask = $state('');
+
+	// Régularité : la journée complète à portée de main, et les séries en cours.
+	const duty = $derived(obligationsOn(data, date));
+	const bonusDue = $derived(habits.filter((h) => h.kind === 'bonus' && h.frequency.type !== 'weekly'));
+	const bonusDone = $derived(bonusDue.filter((h) => logOf(h)).length);
+	const dayDone = $derived(duty.expected > 0 && duty.done === duty.expected);
+	const dayPerfect = $derived(dayDone && bonusDue.length > 0 && bonusDone === bonusDue.length);
+	const streakOf = (h: Habit) => (h.frequency.type === 'weekly' ? habitWeekStreak(data, h, date) : habitStreak(data, h, date));
+	const streaks = $derived(
+		habits
+			.map((h) => ({ h, n: streakOf(h), weekly: h.frequency.type === 'weekly' }))
+			.filter((s) => s.n >= 2)
+			.sort((a, b) => b.n - a.n)
+			.slice(0, 6)
+	);
+	const dayIndex = $derived((weekday(date) + 6) % 7);
 
 	const logOf = (h: Habit) => data.habitLogs.find((l) => l.habitId === h.id && l.date === date);
 
@@ -155,6 +174,55 @@
 	{/if}
 </div>
 
+<!-- Régularité : la journée en cours et les séries -->
+{#if !restDay && (duty.expected > 0 || bonusDue.length)}
+	<section class="card mb-6 flex flex-col gap-3 {dayPerfect ? 'border-reward' : dayDone ? 'border-done/50' : ''}">
+		<div class="flex flex-wrap items-center gap-3">
+			<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full {dayDone ? 'bg-reward text-on-accent' : 'bg-accent-soft text-accent'}">
+				{#if dayPerfect}<Sparkles size={19} />{:else if dayDone}<Check size={19} strokeWidth={3} />{:else}<Flame size={19} />{/if}
+			</span>
+			<div class="min-w-0 flex-1">
+				<div class="font-extrabold">
+					{#if dayPerfect}Journée parfaite !{:else if dayDone}Journée complète{:else}Vers la journée complète{/if}
+				</div>
+				<div class="flex flex-wrap items-center gap-1 text-xs font-semibold text-muted">
+					{#if dayPerfect}
+						Tout est fait, bonus compris : +{REGULARITY.dayPerfect.xp} XP de base.
+					{:else if dayDone}
+						{bonusDue.length
+							? `Encore ${bonusDue.length - bonusDone} bonus pour la journée parfaite (+${REGULARITY.dayPerfect.xp} XP au lieu de +${REGULARITY.dayComplete.xp}).`
+							: `+${REGULARITY.dayComplete.xp} XP de base.`}
+					{:else if duty.expected}
+						Encore {duty.expected - duty.done} obligation{duty.expected - duty.done > 1 ? 's' : ''} : +{REGULARITY.dayComplete.xp} XP
+						<LootLine loot={REGULARITY.dayComplete.loot} signed size={10} />
+					{:else}
+						Pas d'obligation aujourd'hui : fais tes bonus pour le plaisir.
+					{/if}
+				</div>
+			</div>
+			<div class="text-right text-xs font-bold text-muted tabular-nums">{duty.done + bonusDone}/{duty.expected + bonusDue.length}</div>
+		</div>
+		<div class="flex h-2 gap-0.5 overflow-hidden rounded-full" aria-hidden="true">
+			{#each Array(duty.expected) as _, i (i)}<span class="flex-1 transition-colors {i < duty.done ? 'bg-done' : 'bg-zinc-200'}"></span>{/each}
+			{#each Array(bonusDue.length) as _, i (i)}<span class="flex-1 transition-colors {i < bonusDone ? 'bg-reward' : 'bg-zinc-100'}"></span>{/each}
+		</div>
+		{#if streaks.length}
+			<div class="flex flex-wrap gap-1.5">
+				{#each streaks as s (s.h.id)}
+					{@const next = s.weekly ? undefined : nextMilestone(s.n)}
+					<span
+						class="chip bg-orange-100 py-1 text-orange-800"
+						title={next ? `Encore ${next.days - s.n} jour(s) pour la série de ${next.days} (+${next.xp} XP)` : undefined}
+					>
+						<Flame size={12} strokeWidth={2.6} />{s.h.name} · {s.n}{s.weekly ? ' sem.' : ' j'}
+						{#if next}<span class="font-semibold opacity-70">→ {next.days}</span>{/if}
+					</span>
+				{/each}
+			</div>
+		{/if}
+	</section>
+{/if}
+
 <!-- Routines du jour, par moment -->
 {#each moments as moment (moment)}
 	{@const items = habits.filter((h) => h.moment === moment)}
@@ -172,6 +240,7 @@
 					{@const log = logOf(h)}
 					{@const gain = log ? earned(`habit:${log.id}`) : null}
 					{@const routine = h.form === 'routine' ? routineOn(h, date) : undefined}
+					{@const streak = streakOf(h)}
 					<div class="card p-3.5 transition-colors {log ? 'border-done/40 bg-done-soft' : ''}">
 						<div class="flex flex-wrap items-center gap-3">
 							<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors {log ? 'bg-done text-on-accent' : 'bg-accent-soft text-accent'}">
@@ -181,7 +250,13 @@
 								<div class="flex flex-wrap items-center gap-1.5 font-bold">
 									{h.name}
 									{#if h.kind === 'bonus'}<span class="chip bg-amber-100 text-amber-800">bonus</span>{/if}
+									{#if streak >= 2}
+										<span class="chip bg-orange-100 text-orange-800" title="Série en cours"><Flame size={11} strokeWidth={2.6} />{streak}{h.frequency.type === 'weekly' ? ' sem.' : ''}</span>
+									{/if}
 								</div>
+								{#if h.frequency.type !== 'weekly'}
+									<div class="my-0.5"><WeekDots marks={habitWeekDays(data, h, date, today())} current={dayIndex} /></div>
+								{/if}
 								<div class="truncate text-xs text-muted">
 									{#if h.frequency.type === 'weekly'}
 										{logsInWeek(data, h.id, date).length}/{h.frequency.times} cette semaine ·

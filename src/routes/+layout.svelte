@@ -2,7 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { AudioLines, CalendarDays, Ellipsis, Flag, ListTodo, NotebookPen, Orbit, Repeat, Rocket, Sun, UserRound, X } from '@lucide/svelte';
+	import { AudioLines, CalendarDays, Ellipsis, Flag, ListTodo, NotebookPen, NotebookTabs, Orbit, Repeat, Rocket, Sun, UserRound, X } from '@lucide/svelte';
 	import LevelRing from '#lib/components/LevelRing.svelte';
 	import LootLine from '#lib/components/LootLine.svelte';
 	import TestBanner from '#lib/components/TestBanner.svelte';
@@ -21,6 +21,7 @@
 		today: { href: '#/', label: "Aujourd'hui", icon: Sun },
 		tasks: { href: '#/taches', label: 'À faire', icon: ListTodo },
 		planning: { href: '#/planning', label: 'Planning', icon: CalendarDays },
+		notebook: { href: '#/carnet', label: 'Carnet', icon: NotebookTabs },
 		ship: { href: '#/vaisseau', label: 'Vaisseau', icon: Rocket },
 		campaigns: { href: '#/campagnes', label: 'Campagnes', icon: Flag },
 		review: { href: '#/revue', label: 'Revue', icon: NotebookPen },
@@ -30,13 +31,13 @@
 	};
 
 	const groups = [
-		{ label: 'Bord', items: [ITEMS.today, ITEMS.tasks, ITEMS.planning] },
+		{ label: 'Bord', items: [ITEMS.today, ITEMS.tasks, ITEMS.planning, ITEMS.notebook] },
 		{ label: 'Voyage', items: [ITEMS.ship, ITEMS.campaigns, ITEMS.review] },
 		{ label: 'Pilote', items: [ITEMS.pilot, ITEMS.habits, ITEMS.dance] }
 	];
 	// Sur mobile : quatre écrans principaux dans la barre, le reste dans « Plus ».
 	const primary = [ITEMS.today, ITEMS.tasks, ITEMS.ship, ITEMS.pilot];
-	const secondary = [ITEMS.planning, ITEMS.campaigns, ITEMS.review, ITEMS.habits, ITEMS.dance];
+	const secondary = [ITEMS.planning, ITEMS.notebook, ITEMS.campaigns, ITEMS.review, ITEMS.habits, ITEMS.dance];
 
 	// Routage par hash (#/planning…) pour fonctionner sur n'importe quel hébergement statique.
 	const active = (href: string) => page.route.id === href.slice(1);

@@ -2,6 +2,28 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-11-02 (suite) — Régularité, nouvelles habitudes, Carnet
+
+**Demandes** : récompenser la régularité (journée où tout est fait, semaine complète, semaine entière à tenir une habitude quotidienne comme lire 10 minutes, idem pour les routines, le sport, la danse) ; ajouter des habitudes du quotidien (lecture, ménage, prendre l'air) ; un système de notes et de listes qui ne sont pas des tâches (courses, déco à acheter, à essayer, à visiter, à penser) ; le tout pratique, intuitif et ludique.
+
+**Décisions**
+
+- Récompenses de régularité (détail et valeurs dans le cahier des charges, section « Univers, vaisseau et récompenses ») : journée complète / parfaite, paliers de série par habitude (7 → 365 jours), semaine pleine par habitude (qui grandit avec les semaines d'affilée), semaine pleine par discipline, semaine sans faille. Versées au moment où elles se produisent, avec une notification ; retirées si l'on décoche.
+- Trois trophées de plus (22) : Pilote fiable, Habitude ancrée, Métronome.
+- Nouvelles catégories « Lecture & culture » (Savoir) et « Maison » (Intendance). Nouvelles habitudes quotidiennes, en **bonus** pour ne jamais pénaliser : Lecture (5 / 10 / 30 min), Ménage express (5 min / 15 min / une pièce à fond), Prendre l'air (5 min / 20 min de marche / 1 h dehors). Elles s'ajoutent une seule fois aux données existantes (`contentVersion`), et se passent en obligatoire depuis Habitudes si besoin.
+- Carnet : listes à cocher et notes libres, sans XP (ce ne sont pas des tâches). Un élément peut devenir une tâche de « Cette semaine », qui rapporte alors de l'XP.
+
+**Réalisé**
+
+- Moteur `regularity.ts` + 5 tests (26 au total), branché dans le store (`syncRegularity`).
+- Aujourd'hui : carte « Vers la journée complète » (barre obligations + bonus, récompense en jeu, séries en cours avec flamme et prochain palier), flamme de série et semaine en sept pastilles sur chaque habitude.
+- Écran Carnet (menu Bord, et « Plus » sur mobile) : six listes de départ (Courses, Déco à acheter, À essayer, À visiter, Livres à lire, À penser), création avec type, icône et couleur, ajout à la chaîne avec Entrée, collage d'une liste entière, renommer, épingler, modifier un élément d'un clic, cochés repliés avec « Tout effacer », recherche dans tout le carnet, dernière liste ouverte retenue.
+- Vérifié avec le mode test (scénario régénéré) : séries et semaines pleines versées sur l'historique, notification « Journée parfaite » en recochant une obligation, ajout à la chaîne, collage de trois lignes, élément transformé en tâche, note libre ; mobile 375 px sans débordement. Corrigé : le mode test créait une seconde habitude « lecture » (même identifiant).
+
+**Pistes proposées (pas développées)** : bouclier de série (gagné tous les 7 jours, il sauve une série après un jour raté) ; défi de la semaine tiré le lundi ; enchaînements (réveil musculaire puis kiné le même matin) ; titres du pilote gagnés par les séries ; alerte douce « série en danger » le soir ; Élan (Inspiration haute : XP ×1,2 pour la journée) ; bilan des séries dans la revue du dimanche ; livres lus du Carnet comptés pour un trophée.
+
+**Prochaine étape** : retours de l'utilisateur sur ces mécaniques et les pistes, puis Revue, Habitudes, Danse.
+
 ## 2026-11-02 (suite) — V2 : écran Campagnes
 
 **Décision** : l'écran suit le lore (`docs/univers.md`) : une campagne est une **destination** à rejoindre, ses chapitres sont les **étapes** de la route. Statuts affichés « En route », « À quai » (pause), « Atteinte ». Les données et le moteur ne changent pas.
