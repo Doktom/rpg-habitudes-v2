@@ -10,9 +10,10 @@
 		missed: 'bg-rose-100 text-rose-700',
 		todo: 'border border-dashed border-accent text-accent',
 		later: 'bg-raised text-muted',
+		shield: 'bg-sky-100 text-sky-800',
 		off: 'text-muted opacity-40'
 	};
-	const SAY: Record<DayMark, string> = { done: 'fait', missed: 'raté', todo: 'à faire', later: 'à venir', off: 'libre' };
+	const SAY: Record<DayMark, string> = { done: 'fait', missed: 'raté', todo: 'à faire', later: 'à venir', shield: 'protégé par un bouclier', off: 'libre' };
 </script>
 
 <span class="inline-flex items-center gap-0.5" role="img" aria-label={marks.map((m, i) => `${LETTERS[i]} ${SAY[m]}`).join(', ')}>

@@ -135,6 +135,7 @@ export function seed(today: ISODate): AppData {
 		events: [],
 		restDays: [],
 		minimumModeDays: [],
+		shieldedDays: [],
 		lastProcessedDay: undefined,
 		ship: { modules: {} },
 		skills: {},
@@ -151,6 +152,7 @@ export function withDefaults(data: AppData): AppData {
 	data.skills ??= {};
 	data.trophies ??= {};
 	data.notebook ??= [];
+	data.shieldedDays ??= [];
 	return addContent(data, today());
 }
 

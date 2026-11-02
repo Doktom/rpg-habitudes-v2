@@ -54,6 +54,15 @@ export const REGULARITY = {
 	weekComplete: { xp: 150, loot: { crystal: 2 } as Loot }
 } as const;
 
+// Boucliers de série : un jour raté protégé, pour que les séries et les semaines pleines survivent.
+export const SHIELD = {
+	earnEvery: 7, // un bouclier toutes les 7 journées complètes
+	maxBase: 2, // réserve de départ…
+	hullLevelsPerSlot: 2, // … +1 place tous les 2 niveaux de Coque (4 au maximum)
+	cost: { energy: 6 } as Loot, // achat au chantier
+	minStreak: 3 // on ne grille pas un bouclier pour une série de moins de 3 jours
+} as const;
+
 // Bonus des modules du vaisseau et des compétences du pilote, par niveau.
 export const EFFECTS = {
 	reactorXp: 0.06, // Réacteur : +6 % d'XP

@@ -12,6 +12,7 @@
 		MoonStar,
 		Orbit,
 		Plus,
+		Shield,
 		Sparkles,
 		Sunrise,
 		SunMedium
@@ -22,10 +23,11 @@
 	import OrbitRing from '#lib/components/OrbitRing.svelte';
 	import TierButtons from '#lib/components/TierButtons.svelte';
 	import WeekDots from '#lib/components/WeekDots.svelte';
-	import { GAUGES, REGULARITY } from '#lib/config.ts';
+	import { GAUGES, REGULARITY, SHIELD } from '#lib/config.ts';
 	import { addDays, formatLong, formatShort, today, weekday } from '#lib/dates.ts';
 	import { discipline, gaugeValue, obligationsOn, totalXp } from '#lib/engine/progress.ts';
 	import { habitStreak, habitWeekDays, habitWeekStreak, nextMilestone } from '#lib/engine/regularity.ts';
+	import { shieldState } from '#lib/engine/shields.ts';
 	import { danceClassesOn, habitsForDay, logsInWeek, partiesOn, routineOn, tasksForDay } from '#lib/engine/schedule.ts';
 	import { addLoot, orbit, orbitReward, sectorsLit } from '#lib/engine/ship.ts';
 	import { levelInfo } from '#lib/engine/xp.ts';
@@ -85,6 +87,9 @@
 			.slice(0, 6)
 	);
 	const dayIndex = $derived((weekday(date) + 6) % 7);
+	const shields = $derived(shieldState(data));
+	// Le bouclier qui a servi la veille, pour le dire en arrivant le matin.
+	const savedYesterday = $derived(data.events.find((e) => e.source === `shield:use:${addDays(date, -1)}`));
 
 	const logOf = (h: Habit) => data.habitLogs.find((l) => l.habitId === h.id && l.date === date);
 
@@ -200,12 +205,32 @@
 					{/if}
 				</div>
 			</div>
-			<div class="text-right text-xs font-bold text-muted tabular-nums">{duty.done + bonusDone}/{duty.expected + bonusDue.length}</div>
+			<div class="flex flex-col items-end gap-1">
+				<span class="text-xs font-bold text-muted tabular-nums">{duty.done + bonusDone}/{duty.expected + bonusDue.length}</span>
+				<a
+					href="#/vaisseau"
+					class="flex items-center gap-0.5"
+					title={shields.stock >= shields.max
+						? 'Réserve de boucliers pleine'
+						: `Prochain bouclier dans ${SHIELD.earnEvery - shields.progress} journée(s) complète(s)`}
+					aria-label="{shields.stock} bouclier{shields.stock > 1 ? 's' : ''} de série sur {shields.max}"
+				>
+					{#each Array(shields.max) as _, i (i)}
+						<Shield size={13} strokeWidth={2.4} class={i < shields.stock ? 'fill-sky-300 text-sky-700' : 'text-muted opacity-40'} />
+					{/each}
+				</a>
+			</div>
 		</div>
 		<div class="flex h-2 gap-0.5 overflow-hidden rounded-full" aria-hidden="true">
 			{#each Array(duty.expected) as _, i (i)}<span class="flex-1 transition-colors {i < duty.done ? 'bg-done' : 'bg-zinc-200'}"></span>{/each}
 			{#each Array(bonusDue.length) as _, i (i)}<span class="flex-1 transition-colors {i < bonusDone ? 'bg-reward' : 'bg-zinc-100'}"></span>{/each}
 		</div>
+		{#if savedYesterday}
+			<p class="flex items-center gap-2 rounded-xl bg-sky-100 px-3 py-2 text-xs font-semibold text-sky-800">
+				<Shield size={14} strokeWidth={2.4} class="shrink-0" />
+				Hier, un bouclier a pris le choc : {savedYesterday.label.replace('Bouclier de série : ', '')}.
+			</p>
+		{/if}
 		{#if streaks.length}
 			<div class="flex flex-wrap gap-1.5">
 				{#each streaks as s (s.h.id)}

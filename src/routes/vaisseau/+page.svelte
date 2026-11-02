@@ -3,7 +3,7 @@
 	import LootLine from '#lib/components/LootLine.svelte';
 	import OrbitRing from '#lib/components/OrbitRing.svelte';
 	import ShipArt from '#lib/components/ShipArt.svelte';
-	import { MODULE_MAX_LEVEL, SKILL_MAX_LEVEL } from '#lib/config.ts';
+	import { MODULE_MAX_LEVEL, SHIELD, SKILL_MAX_LEVEL } from '#lib/config.ts';
 	import { formatShort, today } from '#lib/dates.ts';
 	import { moduleLevel, skillLevel } from '#lib/engine/effects.ts';
 	import {
@@ -19,6 +19,7 @@
 		skillPoints,
 		upgradeCost
 	} from '#lib/engine/ship.ts';
+	import { shieldState } from '#lib/engine/shields.ts';
 	import { TROPHIES } from '#lib/engine/trophies.ts';
 	import { store } from '#lib/store.svelte.ts';
 	import type { Loot, ModuleId, SkillId } from '#lib/types.ts';
@@ -44,6 +45,9 @@
 	const SKILL_ICON = { recovery: Wind, logistics: Package, endurance: Mountain, engineering: Wrench } as const;
 	const MAT_ICON = { metal: Hexagon, energy: Zap, crystal: Gem } as const;
 	const MAT_COLOR = { metal: 'text-zinc-500', energy: 'text-amber-500', crystal: 'text-accent' } as const;
+
+	const shields = $derived(shieldState(data));
+	const canBuyShield = $derived(shields.stock < shields.max && canAfford(stock, SHIELD.cost));
 
 	let flashed = $state<ModuleId | null>(null);
 
@@ -105,6 +109,26 @@
 				<span class="hidden text-[11px] leading-snug text-muted sm:block">{MATERIALS[m].lore}</span>
 			</div>
 		{/each}
+	</div>
+	<div class="card mt-3 flex flex-wrap items-center gap-3">
+		<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-sky-100 text-sky-800"><Shield size={20} strokeWidth={2.3} /></span>
+		<div class="min-w-0 flex-1">
+			<div class="flex items-center gap-2 font-extrabold">
+				Boucliers de série
+				<span class="flex gap-0.5" aria-label="{shields.stock} sur {shields.max}">
+					{#each Array(shields.max) as _, i (i)}
+						<Shield size={14} strokeWidth={2.4} class={i < shields.stock ? 'fill-sky-300 text-sky-700' : 'text-muted opacity-40'} />
+					{/each}
+				</span>
+			</div>
+			<p class="text-xs text-muted">
+				Un jour raté qui casserait une série d'au moins {SHIELD.minStreak} jours est protégé automatiquement. Un bouclier toutes les
+				{SHIELD.earnEvery} journées complètes ; la Coque renforcée agrandit la réserve.
+			</p>
+		</div>
+		<button class="btn text-xs" disabled={!canBuyShield} onclick={() => store.buyShield()}>
+			Fabriquer <LootLine loot={SHIELD.cost} size={11} />
+		</button>
 	</div>
 </section>
 

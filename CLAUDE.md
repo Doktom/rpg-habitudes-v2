@@ -14,10 +14,10 @@ Ce dépôt (`Doktom/rpg-habitudes-v2`) est la **V2** : mêmes mécaniques que la
 
 0. `git pull` : le travail a pu avancer sur un autre PC (voir « Travailler sur plusieurs PC »).
 1. Lire la carte mentale (voir « Carte mentale : outil de pilotage »), puis l'entrée la plus récente de `docs/journal-sessions.md` et `docs/cahier-des-charges.md`.
-2. `npm install` puis `npm test` (26 tests attendus au vert) et `npm run dev`.
+2. `npm install` puis `npm test` (29 tests attendus au vert) et `npm run dev`.
 3. Si le doc partagé Claude Docs n'est pas accessible, `docs/cahier-des-charges.md` fait foi.
 
-**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes refaits ; récompenses de régularité, nouvelles habitudes (lecture, ménage, prendre l'air) et écran Carnet ajoutés.
+**État au 02/11/2026** : refonte graphique en cours ; système de design, coque, Aujourd'hui, Vaisseau, À faire, Pilote, Planning et Campagnes refaits ; récompenses de régularité, nouvelles habitudes (lecture, ménage, prendre l'air) écran Carnet et boucliers de série ajoutés.
 
 **Prochaines étapes, par ordre de priorité**
 
@@ -85,6 +85,7 @@ La carte mentale est l'outil de pilotage du projet et l'interface d'échange ave
 - Prévu : Supabase (Postgres, Auth, RLS, Edge Functions), PWA avec Web Push.
 - SvelteKit 3 : pas de `svelte.config.js`, la config passe par `sveltekit({...})` dans `vite.config.ts`. Imports internes avec `#lib/...` et l'extension explicite (`#lib/dates.ts`, `#lib/store.svelte.ts`).
 - Régularité : `src/lib/engine/regularity.ts` calcule les récompenses d'une date (journée complète, séries, semaines pleines) ; le store les recalcule de la date modifiée à aujourd'hui (`syncRegularity`, sources `reg:*`) à chaque coche ou décoche, et annonce les nouveaux gains par une notification.
+- Boucliers de série : `src/lib/engine/shields.ts` (réserve rejouée depuis le journal : gains `reg:day:*`, achats `shield:buy:*`, usages `shieldedDays`). Le store en dépense un dans `rollover` (`useShield`) avant de clôturer un jour raté ; un jour protégé est sauté par les séries et les semaines pleines, pas par les obligations.
 - Contenus ajoutés après coup : `addContent` dans `src/lib/seed.ts`, versé une fois grâce à `contentVersion` (une habitude supprimée ne revient pas). Pour ajouter un contenu, incrémenter `CONTENT_VERSION`.
 - Les règles de jeu vivent dans `src/lib/engine/` (fonctions pures, testées) et les constantes dans `src/lib/config.ts`. XP et jauges sont recalculées depuis le journal `events` : toute action ajoute ou retire des événements, jamais de compteur modifié directement.
 

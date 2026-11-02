@@ -15,6 +15,8 @@ export interface RegularityReward {
 	loot: Loot;
 }
 
+// Jour qui ne compte pas pour les séries : repos, ou raté protégé par un bouclier.
+const skipped = (data: AppData, date: ISODate) => isRestDay(data, date) || data.shieldedDays.includes(date);
 const logged = (data: AppData, habitId: string, date: ISODate) => data.habitLogs.some((l) => l.habitId === habitId && l.date === date);
 const danced = (data: AppData, classId: string, date: ISODate) => data.danceLogs.some((l) => l.refId === classId && l.date === date);
 
@@ -38,14 +40,14 @@ function weekStatus(data: AppData, items: WeekItems, monday: ISODate, asOf: ISOD
 			continue;
 		}
 		for (const d of days) {
-			if (!isDueOn(h, d) || isRestDay(data, d)) continue;
+			if (!isDueOn(h, d) || skipped(data, d)) continue;
 			expected++;
 			if (d > asOf || !logged(data, h.id, d)) complete = false;
 		}
 	}
 	for (const c of items.classes) {
 		for (const d of days) {
-			if (isRestDay(data, d) || !danceClassesOn(data, d).some((x) => x.id === c.id)) continue;
+			if (skipped(data, d) || !danceClassesOn(data, d).some((x) => x.id === c.id)) continue;
 			expected++;
 			if (d > asOf || !danced(data, c.id, d)) complete = false;
 		}
@@ -78,8 +80,9 @@ export function habitStreak(data: AppData, habit: Habit, asOf: ISODate): number 
 	if (habit.frequency.type === 'weekly') return 0;
 	let streak = 0;
 	for (let d = asOf, i = 0; d >= habit.createdAt && i < 400; d = addDays(d, -1), i++) {
-		if (!isDueOn(habit, d) || isRestDay(data, d)) continue;
+		if (!isDueOn(habit, d)) continue;
 		if (logged(data, habit.id, d)) streak++;
+		else if (skipped(data, d)) continue;
 		else if (d !== asOf) break;
 	}
 	return streak;
@@ -224,14 +227,14 @@ export function habitWeekProgress(data: AppData, habit: Habit, date: ISODate): {
 	let done = 0;
 	let expected = 0;
 	for (const d of range(monday, addDays(monday, 6))) {
-		if (!isDueOn(habit, d) || isRestDay(data, d)) continue;
+		if (!isDueOn(habit, d) || skipped(data, d)) continue;
 		expected++;
 		if (logged(data, habit.id, d)) done++;
 	}
 	return { done, expected };
 }
 
-export type DayMark = 'done' | 'missed' | 'todo' | 'later' | 'off';
+export type DayMark = 'done' | 'missed' | 'todo' | 'later' | 'off' | 'shield';
 
 // Les sept jours de la semaine d'une habitude : fait, raté, à faire ou non dû (repos compris).
 export function habitWeekDays(data: AppData, habit: Habit, date: ISODate, asOf: ISODate): DayMark[] {
@@ -239,6 +242,7 @@ export function habitWeekDays(data: AppData, habit: Habit, date: ISODate, asOf: 
 	return range(monday, addDays(monday, 6)).map((d) => {
 		if (logged(data, habit.id, d)) return 'done';
 		const due = habit.frequency.type !== 'weekly' && isDueOn(habit, d);
+		if (due && data.shieldedDays.includes(d)) return 'shield';
 		if (!due || isRestDay(data, d)) return 'off';
 		return d < asOf ? 'missed' : d === asOf ? 'todo' : 'later';
 	});

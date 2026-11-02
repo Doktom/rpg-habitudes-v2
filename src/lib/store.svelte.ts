@@ -1,10 +1,11 @@
-import { DANCE_XP_DIFFICULTY, GAUGES, LOOT_REWARDS, SKILL_MAX_LEVEL, XP_REWARDS } from './config';
+import { DANCE_XP_DIFFICULTY, GAUGES, LOOT_REWARDS, SHIELD, SKILL_MAX_LEVEL, XP_REWARDS } from './config';
 import { addDays, range, setClock, today } from './dates';
 import { inspirationBonus, moduleLevel, skillLevel, taskBonus, tierFactor, xpBonus } from './engine/effects';
 import { actionXp, bonusXp, splitXp } from './engine/xp';
 import { closeDay, daysToClose, discipline } from './engine/progress';
 import { addLoot, canAfford, lootFor, materials, negate, orbit, orbitReward, scaleLoot, sectorsLit, skillPoints, upgradeCost } from './engine/ship';
 import { regularityRewards } from './engine/regularity';
+import { shieldState, streaksAtRisk } from './engine/shields';
 import { newTrophies } from './engine/trophies';
 import { uid } from './id';
 import { seed, withDefaults } from './seed';
@@ -145,12 +146,35 @@ export class Store {
 	rollover() {
 		const days = daysToClose(this.data, today());
 		for (const d of days) {
+			this.useShield(d);
 			this.dropEvents(`day:${d}`);
 			const e = closeDay(this.data, d);
 			if (e) this.data.events.push(e);
 			this.data.lastProcessedDay = d;
 		}
-		if (days.length) this.persist();
+		if (days.length) {
+			this.syncRegularity(days[0]);
+			this.persist();
+		}
+	}
+
+	// À la clôture d'un jour raté : si une série d'au moins 3 jours allait casser, un bouclier la protège.
+	private useShield(date: ISODate) {
+		const risk = streaksAtRisk(this.data, date);
+		if (!risk.length || shieldState(this.data, date).stock < 1) return;
+		this.data.shieldedDays.push(date);
+		const names = risk.map((r) => `${r.habit.name} (${r.streak} j)`).join(', ');
+		this.event({ date, source: `shield:use:${date}`, label: `Bouclier de série : ${names} sauvée${risk.length > 1 ? 's' : ''}` });
+		if (!this.suspended) toasts.push({ title: `Bouclier activé : ${risk.map((r) => r.habit.name).join(', ')} sauvée${risk.length > 1 ? 's' : ''}` });
+	}
+
+	// Achat d'un bouclier au chantier, dans la limite de la réserve.
+	buyShield(): boolean {
+		const s = shieldState(this.data);
+		if (s.stock >= s.max || !canAfford(materials(this.data), SHIELD.cost)) return false;
+		this.event({ date: today(), source: `shield:buy:${uid()}`, label: 'Bouclier de série acheté', loot: negate(SHIELD.cost) });
+		this.persist();
+		return true;
 	}
 
 	toggleRestDay(date: ISODate) {

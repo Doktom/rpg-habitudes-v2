@@ -103,6 +103,7 @@ Toute action rapporte de l'XP **et** des matériaux (Alliage, Cellule, Cristal) 
 - **Semaine sans faille** : toutes les obligations de la semaine : +150 XP, 2 Cristaux.
 - L'écran Aujourd'hui montre la progression vers la journée complète, les séries en cours (flamme et prochain palier) et la semaine de chaque habitude en sept pastilles.
 - XP multipliée par la Discipline et les bonus du vaisseau, comme le reste. Valeurs dans `REGULARITY` (`src/lib/config.ts`), à calibrer à l'usage.
+- **Boucliers de série** : à la clôture d'un jour raté, si une habitude avait une série d'au moins 3 jours, un bouclier se dépense tout seul et protège la journée : les séries et les semaines pleines continuent. Le jour ne compte pas comme fait (pas d'XP ; Discipline et Motivation voient le raté). On gagne un bouclier toutes les 7 journées complètes, ou on le fabrique au chantier du Vaisseau (6 Cellules). Réserve de 2, +1 tous les 2 niveaux de Coque (4 au maximum). Le lendemain, l'écran Aujourd'hui dit quelles séries ont été sauvées. Valeurs dans `SHIELD`.
 
 Le détail (lore, tables de butin, coûts, effets, trophées) est dans `docs/univers.md`. Les noms sont provisoires. Le graphisme viendra dans une grosse mise à jour ultérieure.
 
