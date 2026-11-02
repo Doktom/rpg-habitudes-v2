@@ -2,6 +2,23 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-11-02 (suite) — V2 : écran Planning
+
+**Réalisé**
+
+- En-tête comme Aujourd'hui : secteur du jour (vue Jour) ou dates de l'orbite (vue Semaine), flèches qui avancent d'un jour ou d'une semaine, sélecteur Jour / Semaine.
+- Bandeau des sept secteurs (jour, date, nom du secteur, un point par élément planifié, icône de repos) : un clic ouvre la vue Jour.
+- Vue Jour par défaut sous 1 024 px de large (le cahier prévoit l'agenda jour sur mobile), vue Semaine sur PC.
+- Agenda aux jetons du thème, défilant dans sa carte avec les jours collés en haut ; il s'ouvre une heure avant maintenant. Ligne rouge « maintenant » sur aujourd'hui. Blocs colorés par type avec icône : cours (rose), soirée (fuchsia), habitude (sarcelle), tâche (accent), tâche faite barrée.
+- Créer une tâche en touchant un créneau vide (heure préremplie, focus sur le titre) ; glisser-déposer conservé, avec surbrillance du créneau visé.
+- Fiche d'un créneau : titre, date, début, fin, effort en pilules avec aperçu de la récompense, Terminer / Rouvrir (avec notification de gain), Retirer de l'agenda, suppression confirmée.
+- Listes « À caser » en panneau latéral : poignée, pastille de catégorie, date, ajout rapide.
+- Vérifié avec le mode test en sombre et en clair (1 280 px) et sur mobile (375 px, pas de débordement) : création au clic, Terminer (+18 XP), glisser-déposer d'une liste vers vendredi 10 h. Types au vert, 21 tests au vert.
+
+**Note** : la carte mentale (artifact `Bq2ySz5W8oPtYHMQpmxQz9`) n'est pas accessible depuis le compte utilisé pour cette session ; `docs/carte-mentale.md` a servi de référence et le compte rendu n'a pas pu y être ajouté.
+
+**Prochaine étape** : Campagnes, puis Revue, Habitudes, Danse.
+
 ## 2026-11-02 — Reprise sur plusieurs PC
 
 **Décision** : pour reprendre le projet d'un PC à l'autre, GitHub sert de synchro (pas OneDrive) ; `CLAUDE.md` et ce journal portent tout le contexte nécessaire.
