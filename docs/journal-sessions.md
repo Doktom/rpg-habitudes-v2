@@ -2,6 +2,23 @@
 
 Entrées les plus récentes en haut.
 
+## 2026-11-02 (suite) — V2 : écran Campagnes
+
+**Décision** : l'écran suit le lore (`docs/univers.md`) : une campagne est une **destination** à rejoindre, ses chapitres sont les **étapes** de la route. Statuts affichés « En route », « À quai » (pause), « Atteinte ». Les données et le moteur ne changent pas.
+
+**Réalisé**
+
+- Liste : en-tête « Destinations » avec trois chiffres (campagnes en route, quêtes accomplies, XP de campagne), cartes avec catégorie, intention, mini carte de route (une balise par étape), avancement et prochaine quête ; sections En route, À quai et Destinations atteintes (repliée) ; état vide illustré.
+- Création : nom, stat, intention et arrivée visée (champ `target` du modèle, enfin utilisé).
+- Détail : en-tête avec la carte de route en grand (départ, étapes faites, étape en cours mise en avant, étapes verrouillées, destination ; un clic sur une balise fait défiler jusqu'à l'étape), panneau « Modifier » (nom, stat, intention, arrivée, suppression confirmée), mise à quai / reprise.
+- Étapes en cartes : pastille d'état, barre de progression, récompense de l'étape ; quêtes avec case ronde (couleur pêche pour les boss), icône de boss, XP et butin ; tâches liées avec case ronde et ajout rapide.
+- Ajout de quête : XP en pilules (50, 100, 200, 400), bascule Boss, focus direct sur le nom.
+- Carte « Arrivée à destination » avec la récompense (+1 000 XP, 10 Cristaux) et une confirmation avant de terminer la campagne.
+- Notifications de gain : quête accomplie, boss vaincu, étape atteinte, tâche terminée, destination atteinte.
+- Vérifié avec le mode test en sombre et en clair (1 280 px) et sur mobile (375 px, pas de débordement) : quête accomplie (+73 XP), ajout d'une quête boss. Types au vert, 21 tests au vert.
+
+**Prochaine étape** : Revue, puis Habitudes, Danse.
+
 ## 2026-11-02 (suite) — V2 : écran Planning
 
 **Réalisé**
