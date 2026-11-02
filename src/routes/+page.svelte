@@ -27,7 +27,7 @@
 	import { addDays, formatLong, formatShort, today, weekday } from '#lib/dates.ts';
 	import { discipline, gaugeValue, obligationsOn, totalXp } from '#lib/engine/progress.ts';
 	import { habitStreak, habitWeekDays, habitWeekStreak, nextMilestone } from '#lib/engine/regularity.ts';
-	import { shieldState } from '#lib/engine/shields.ts';
+	import { shieldOffer, shieldState } from '#lib/engine/shields.ts';
 	import { danceClassesOn, habitsForDay, logsInWeek, partiesOn, routineOn, tasksForDay } from '#lib/engine/schedule.ts';
 	import { addLoot, orbit, orbitReward, sectorsLit } from '#lib/engine/ship.ts';
 	import { levelInfo } from '#lib/engine/xp.ts';
@@ -88,6 +88,8 @@
 	);
 	const dayIndex = $derived((weekday(date) + 6) % 7);
 	const shields = $derived(shieldState(data));
+	// Un raté récent casse une série : on propose le joker, sans jamais le dépenser à la place du joueur.
+	const offer = $derived(isToday ? shieldOffer(data, today()) : null);
 	// Le bouclier qui a servi la veille, pour le dire en arrivant le matin.
 	const savedYesterday = $derived(data.events.find((e) => e.source === `shield:use:${addDays(date, -1)}`));
 
@@ -179,6 +181,36 @@
 	{/if}
 </div>
 
+<!-- Joker : sauver une série après un raté -->
+{#if offer}
+	<section class="card mb-4 flex flex-col gap-3 border-sky-300">
+		<div class="flex items-start gap-3">
+			<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-800"><Shield size={19} strokeWidth={2.4} /></span>
+			<div class="min-w-0 flex-1">
+				<div class="font-extrabold">
+					{offer.date === addDays(today(), -1) ? 'Hier' : formatLong(offer.date)}, {offer.risk.length > 1 ? 'des séries se sont cassées' : 'une série s’est cassée'}
+				</div>
+				<p class="text-xs font-semibold text-muted">
+					{#each offer.risk as r, i (r.habit.id)}{i ? ', ' : ''}<span class="text-ink">{r.habit.name}</span> ({r.streak} jours){/each}.
+					{#if shields.stock}
+						Un bouclier peut {offer.risk.length > 1 ? 'les' : 'la'} sauver ; il t'en reste {shields.stock}. Garde-les pour les séries qui comptent.
+					{:else}
+						Pas de bouclier en réserve : la prochaine fois peut-être.
+					{/if}
+				</p>
+			</div>
+		</div>
+		<div class="flex flex-wrap justify-end gap-2">
+			<button class="btn btn-ghost text-xs" onclick={() => store.declineShield(offer.date)}>Laisser filer</button>
+			{#if shields.stock}
+				<button class="btn btn-primary text-xs" onclick={() => store.useShield(offer.date)}><Shield size={14} /> Utiliser un bouclier</button>
+			{:else}
+				<a class="btn text-xs" href="#/vaisseau">En fabriquer un</a>
+			{/if}
+		</div>
+	</section>
+{/if}
+
 <!-- Régularité : la journée en cours et les séries -->
 {#if !restDay && (duty.expected > 0 || bonusDue.length)}
 	<section class="card mb-6 flex flex-col gap-3 {dayPerfect ? 'border-reward' : dayDone ? 'border-done/50' : ''}">
@@ -228,7 +260,7 @@
 		{#if savedYesterday}
 			<p class="flex items-center gap-2 rounded-xl bg-sky-100 px-3 py-2 text-xs font-semibold text-sky-800">
 				<Shield size={14} strokeWidth={2.4} class="shrink-0" />
-				Hier, un bouclier a pris le choc : {savedYesterday.label.replace('Bouclier de série : ', '')}.
+				Bouclier posé sur hier : {savedYesterday.label.replace('Bouclier de série : ', '')}.
 			</p>
 		{/if}
 		{#if streaks.length}

@@ -1,6 +1,7 @@
-// Boucliers de série : gagnés avec les journées complètes (ou achetés), dépensés seuls à la clôture
-// d'un jour raté qui casserait une série. Le jour protégé ne compte pas comme fait : pas d'XP,
-// et la Discipline comme la Motivation voient le raté. Seules les séries et les semaines pleines sont sauves.
+// Boucliers de série : des jokers gagnés avec les journées complètes (ou fabriqués). Le lendemain d'un raté
+// qui casse une série, l'app propose d'en dépenser un ; c'est l'utilisateur qui choisit. Le jour protégé
+// ne compte pas comme fait : pas d'XP, et la Discipline comme la Motivation voient le raté.
+// Seules les séries et les semaines pleines sont sauves.
 import { SHIELD } from '../config';
 import { addDays } from '../dates';
 import type { AppData, Habit, ISODate } from '../types';
@@ -22,8 +23,8 @@ export function shieldState(data: AppData, upTo?: ISODate): { stock: number; max
 		if (upTo && e.date > upTo) continue;
 		if (e.source.startsWith('reg:day:')) steps.push({ date: e.date, order: 0, kind: 'day' });
 		else if (e.source.startsWith('shield:buy:')) steps.push({ date: e.date, order: 1, kind: 'buy' });
+		else if (e.source.startsWith('shield:use:')) steps.push({ date: e.date, order: 2, kind: 'use' }); // date du choix
 	}
-	for (const d of data.shieldedDays) if (!upTo || d <= upTo) steps.push({ date: d, order: 2, kind: 'use' });
 	steps.sort((a, b) => a.date.localeCompare(b.date) || a.order - b.order);
 
 	let stock = 0;
@@ -37,6 +38,16 @@ export function shieldState(data: AppData, upTo?: ISODate): { stock: number; max
 		}
 	}
 	return { stock, max, progress: stock >= max ? 0 : progress };
+}
+
+// Jours récents (avant-hier, hier) dont un raté casse une série et sur lesquels rien n'a encore été décidé.
+export function shieldOffer(data: AppData, asOf: ISODate): { date: ISODate; risk: { habit: Habit; streak: number }[] } | null {
+	for (const date of [addDays(asOf, -2), addDays(asOf, -1)]) {
+		if (data.shieldDeclined.includes(date)) continue;
+		const risk = streaksAtRisk(data, date);
+		if (risk.length) return { date, risk };
+	}
+	return null;
 }
 
 // Les séries qu'un jour raté casserait (habitudes dues, pas faites, avec une série d'au moins 3 jours la veille).

@@ -3,7 +3,7 @@ import { addDays } from '../dates';
 import { seed } from '../seed';
 import type { AppData, Habit } from '../types';
 import { habitStreak } from './regularity';
-import { shieldState, streaksAtRisk } from './shields';
+import { shieldOffer, shieldState, streaksAtRisk } from './shields';
 
 const MON = '2026-10-05';
 
@@ -45,7 +45,9 @@ describe('boucliers de série', () => {
 		const d = world();
 		d.events.push({ id: 'b', at: MON, date: MON, source: 'shield:buy:x', label: 'achat', loot: { energy: -6 } });
 		expect(shieldState(d).stock).toBe(1);
-		d.shieldedDays.push(addDays(MON, 1));
+		const use = addDays(MON, 1);
+		d.shieldedDays.push(MON);
+		d.events.push({ id: 'u', at: use, date: use, source: `shield:use:${MON}`, label: 'usage' });
 		expect(shieldState(d).stock).toBe(0);
 		expect(shieldState(d, MON).stock).toBe(1);
 	});
@@ -57,7 +59,12 @@ describe('boucliers de série', () => {
 		expect(streaksAtRisk(d, addDays(MON, 2))).toEqual([]); // série de 2 : pas la peine
 		log(2);
 		expect(streaksAtRisk(d, addDays(MON, 3)).map((r) => r.streak)).toEqual([3]);
+		expect(shieldOffer(d, addDays(MON, 4))?.date).toBe(addDays(MON, 3)); // proposé le lendemain
+		d.shieldDeclined.push(addDays(MON, 3));
+		expect(shieldOffer(d, addDays(MON, 4))).toBeNull(); // refusé : ne revient pas
+		d.shieldDeclined = [];
 		d.shieldedDays.push(addDays(MON, 3));
+		expect(shieldOffer(d, addDays(MON, 4))).toBeNull(); // utilisé
 		log(4);
 		expect(habitStreak(d, lire, addDays(MON, 4))).toBe(4);
 	});

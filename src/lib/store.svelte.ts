@@ -146,7 +146,6 @@ export class Store {
 	rollover() {
 		const days = daysToClose(this.data, today());
 		for (const d of days) {
-			this.useShield(d);
 			this.dropEvents(`day:${d}`);
 			const e = closeDay(this.data, d);
 			if (e) this.data.events.push(e);
@@ -158,14 +157,23 @@ export class Store {
 		}
 	}
 
-	// À la clôture d'un jour raté : si une série d'au moins 3 jours allait casser, un bouclier la protège.
-	private useShield(date: ISODate) {
+	// Le joueur choisit d'utiliser un bouclier sur un jour raté : les séries de ce jour sont sauves.
+	useShield(date: ISODate): boolean {
 		const risk = streaksAtRisk(this.data, date);
-		if (!risk.length || shieldState(this.data, date).stock < 1) return;
+		if (!risk.length || shieldState(this.data).stock < 1) return false;
 		this.data.shieldedDays.push(date);
 		const names = risk.map((r) => `${r.habit.name} (${r.streak} j)`).join(', ');
-		this.event({ date, source: `shield:use:${date}`, label: `Bouclier de série : ${names} sauvée${risk.length > 1 ? 's' : ''}` });
-		if (!this.suspended) toasts.push({ title: `Bouclier activé : ${risk.map((r) => r.habit.name).join(', ')} sauvée${risk.length > 1 ? 's' : ''}` });
+		this.event({ date: today(), source: `shield:use:${date}`, label: `Bouclier de série : ${names} sauvée${risk.length > 1 ? 's' : ''}` });
+		this.syncRegularity(date);
+		this.persist();
+		toasts.push({ title: `Bouclier utilisé : ${risk.map((r) => r.habit.name).join(', ')} sauvée${risk.length > 1 ? 's' : ''}` });
+		return true;
+	}
+
+	// … ou laisse filer : la proposition ne revient pas pour ce jour.
+	declineShield(date: ISODate) {
+		if (!this.data.shieldDeclined.includes(date)) this.data.shieldDeclined.push(date);
+		this.persist();
 	}
 
 	// Achat d'un bouclier au chantier, dans la limite de la réserve.

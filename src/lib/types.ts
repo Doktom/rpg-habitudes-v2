@@ -225,6 +225,7 @@ export interface AppData {
 	restDays: ISODate[];
 	minimumModeDays: ISODate[];
 	shieldedDays: ISODate[]; // jours ratés protégés par un bouclier de série
+	shieldDeclined: ISODate[]; // jours ratés pour lesquels l'utilisateur a choisi de ne pas utiliser de bouclier
 	lastProcessedDay?: ISODate;
 	ship: { modules: Partial<Record<ModuleId, number>> }; // niveaux des modules du vaisseau
 	skills: Partial<Record<SkillId, number>>; // niveaux des compétences du pilote

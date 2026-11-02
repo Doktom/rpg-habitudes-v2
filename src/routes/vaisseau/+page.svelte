@@ -122,8 +122,8 @@
 				</span>
 			</div>
 			<p class="text-xs text-muted">
-				Un jour raté qui casserait une série d'au moins {SHIELD.minStreak} jours est protégé automatiquement. Un bouclier toutes les
-				{SHIELD.earnEvery} journées complètes ; la Coque renforcée agrandit la réserve.
+				Des jokers : le lendemain d'un raté qui casse une série d'au moins {SHIELD.minStreak} jours, tu choisis d'en utiliser un pour la sauver.
+				Un bouclier toutes les {SHIELD.earnEvery} journées complètes ; la Coque renforcée agrandit la réserve.
 			</p>
 		</div>
 		<button class="btn text-xs" disabled={!canBuyShield} onclick={() => store.buyShield()}>

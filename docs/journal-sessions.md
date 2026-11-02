@@ -4,15 +4,16 @@ Entrées les plus récentes en haut.
 
 ## 2026-11-02 (suite) — Boucliers de série
 
-**Décisions** : un jour raté qui casserait une série d'au moins 3 jours est protégé automatiquement par un bouclier, à la clôture de la journée. Le jour reste un raté pour la Discipline et la Motivation (pas d'XP) : seules les séries et les semaines pleines sont sauves. Un bouclier toutes les 7 journées complètes, ou fabriqué au chantier pour 6 Cellules ; réserve de 2, agrandie par la Coque renforcée (+1 tous les 2 niveaux).
+**Décisions** : les boucliers sont des jokers que l'utilisateur choisit d'utiliser (« il ne faut pas en abuser ») : le lendemain d'un raté qui casse une série d'au moins 3 jours, l'écran Aujourd'hui propose « Utiliser un bouclier » ou « Laisser filer ». Rien n'est dépensé automatiquement. Le jour reste un raté pour la Discipline et la Motivation (pas d'XP) : seules les séries et les semaines pleines sont sauves. Un bouclier toutes les 7 journées complètes, ou fabriqué au chantier pour 6 Cellules ; réserve de 2, agrandie par la Coque renforcée (+1 tous les 2 niveaux).
 
 **Réalisé**
 
 - Moteur `shields.ts` (réserve rejouée depuis le journal, séries menacées) + 3 tests (29 au total). Le calcul des séries saute les jours protégés sans faire perdre le jour aux habitudes faites ce jour-là.
-- Store : `useShield` à la clôture des jours, `buyShield` au chantier ; notification à l'activation.
+- Store : `useShield(date)` et `declineShield(date)` sur choix de l'utilisateur, `buyShield` au chantier ; notification à l'utilisation.
+- Aujourd'hui : carte « Hier, une série s'est cassée » avec les séries concernées, la réserve, et les boutons « Laisser filer » / « Utiliser un bouclier » (ou « En fabriquer un » si la réserve est vide).
 - Aujourd'hui : réserve de boucliers dans la carte de régularité (lien vers le Vaisseau, infobulle « prochain bouclier dans N journées complètes »), message « Hier, un bouclier a pris le choc : … », pastille bleue sur le jour protégé.
 - Vaisseau : carte « Boucliers de série » dans la soute, avec la réserve et le bouton « Fabriquer » (6 Cellules).
-- Vérifié avec le mode test : bouclier gagné puis dépensé dans le scénario, achat (réserve 1 sur 2), activation au saut de jour sauvant Kiné soir (7 j) et Analyse (4 j), message du lendemain. Types, tests et build au vert.
+- Vérifié avec le mode test : bouclier gagné dans le scénario, achat (réserve 1 sur 2), proposition le lendemain d'un raté (Lecture, 8 jours), utilisation qui rend la série et retire la proposition, notification. Types, tests et build au vert.
 
 **Prochaine étape** : écran Revue (avec le bilan des séries et des boucliers de la semaine), puis Habitudes, Danse.
 

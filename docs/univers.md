@@ -57,7 +57,7 @@ Autres sources : quête 2 Alliage + 2 Cellules ; boss 2 Cellules + 2 Cristaux ; 
 
 Régularité : journée complète 1 Cellule (parfaite : 2 Cellules + 2 Alliages) ; séries d'une habitude de 2 Cellules (7 jours) à 12 Cristaux (365 jours) ; semaine pleine d'une habitude 3 Alliages (+1 Cristal à 4, 8, 12, 26 et 52 semaines d'affilée) ; semaine pleine d'une discipline 3 Cellules ; semaine sans faille 2 Cristaux. Trois trophées s'y ajoutent : Pilote fiable (10 journées complètes), Habitude ancrée (série de 30 jours), Métronome (4 semaines sans faille).
 
-**Boucliers de série** : de l'énergie de coque mise en réserve. Quand une journée ratée allait briser une série, un bouclier encaisse le choc à la place. Un bouclier toutes les 7 journées complètes, ou fabriqué au chantier pour 6 Cellules ; la Coque renforcée agrandit la réserve (2, puis 3 au niveau 2 et 4 au niveau 4).
+**Boucliers de série** : de l'énergie de coque mise en réserve. Quand une journée ratée a brisé une série, le pilote peut choisir, le lendemain, de dépenser un bouclier pour encaisser le choc à sa place. Un bouclier toutes les 7 journées complètes, ou fabriqué au chantier pour 6 Cellules ; la Coque renforcée agrandit la réserve (2, puis 3 au niveau 2 et 4 au niveau 4).
 
 ## L'orbite hebdomadaire
 
